@@ -13,31 +13,35 @@ K9 Advocates Mobile is an internal iPhone app for K9 Advocates LLC, built with E
 | Language | TypeScript (`strict: true`, extends `expo/tsconfig.base`) |
 | Package manager | npm (`package-lock.json`) |
 | Entry point | `index.ts` (registers `App` with `registerRootComponent`) |
-| Root component | `App.tsx` (active tab, search text, and selected dog) |
+| Root component | `App.tsx` (active tab, search text, and profile history) |
 | Screens | `src/screens/` |
 | Test runner | Node's built-in test runner (`npm test`) |
 | Local testing | iPhone 16 Pro simulator with Expo Go |
 
 ## Current architecture
 
-- `index.ts` registers the root component from `App.tsx`. `App.tsx` switches between the Dashboard and Dogs tabs with React state and shows either the Dogs Directory or a selected dog's profile.
+- `index.ts` registers the root component from `App.tsx`. `App.tsx` switches between the Dashboard, Dogs, and Clients tabs with React state. It keeps a profile history so dog and client profiles can link to each other with a working back link. Switching tabs clears the history.
 - No navigation library is installed. Expo Router is **not** used, and there is no `src/app/` directory. A navigation library has not been chosen yet. Do not add one or restructure folders unless the developer asks for it.
 
 | Folder | Contents |
 |---|---|
-| `src/screens/` | `DashboardScreen`, `DogsScreen` (directory and search), `DogProfileScreen` |
-| `src/components/` | Shared UI: `DogAvatar`, `DogCard`, `Screen`, `ScreenNavigation` |
-| `src/data/dogRecords.ts` | The shared fictional dog records used by every screen |
+| `src/screens/` | `DashboardScreen`, `DogsScreen` and `ClientsScreen` (directories and search), `DogProfileScreen`, `ClientProfileScreen` |
+| `src/components/` | Shared UI: `ClientCard`, `DogAvatar`, `DogCard`, `Screen`, `ScreenNavigation` |
+| `src/data/dogRecords.ts` | The shared fictional dog records used by every screen. Each dog refers to its owner by `clientId`. |
+| `src/data/clientRecords.ts` | The shared fictional client (owner) records with stable IDs, phone numbers, and emails |
 | `src/data/dashboard.ts` | Fictional arrivals and departures, which refer to dogs by ID |
 | `src/data/dogPhotos.ts` | Bundled dog photos (`assets/dogs/`) with source and license details |
-| `src/data/dogs.ts` | Combines the records with their photos for the screens |
+| `src/data/dogs.ts` | Combines the dog records with their owners and photos for the screens |
 | `src/logic/dogs.ts` | Pure search, filter, schedule, and preview functions |
+| `src/logic/clients.ts` | Pure client search and dog/owner lookup functions |
+| `src/logic/navigation.ts` | Pure profile history functions used by `App.tsx` |
 | `src/theme.ts` | Brand colors, typography, spacing, and border radius |
 | `tests/` | Automated tests for the data and logic; see `tests/README.md` |
 
-- Keep `src/data/dogRecords.ts`, `src/data/dashboard.ts`, and `src/logic/` free of React Native imports. `npm test` compiles them with plain TypeScript outside the app, so platform code there would break the tests. Photos and other platform code belong in `src/data/dogs.ts` or the screens.
-- Screens should get dog data from the shared records rather than defining their own copies.
-- If tests need a new data or logic module, add it to the file list in `scripts/run-tests.cjs`.
+- Keep `src/data/dogRecords.ts`, `src/data/clientRecords.ts`, `src/data/dashboard.ts`, and `src/logic/` free of React Native imports. `npm test` compiles them with plain TypeScript outside the app, so platform code there would break the tests. Photos and other platform code belong in `src/data/dogs.ts` or the screens.
+- Screens should get dog and client data from the shared records rather than defining their own copies. Store owner details only in the client records.
+- Fictional contact details must use the reserved 555-0100 to 555-0199 phone range and the `example.com` email domain.
+- If tests need a new data or logic module, add it to the file list in `scripts/run-tests.cjs`. Add new test files to the same script.
 - There is no backend, database, or authentication service yet. Do not add one without an explicit request.
 
 ## Expo version: verify, don't assume

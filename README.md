@@ -2,7 +2,7 @@
 
 An internal iPhone app for **K9 Advocates LLC**, a dog training, boarding, and daycare business. The app is designed for the business's administrators and is being developed as a public software development and QA portfolio project.
 
-> **Project status: Early development (v0.2).** Project planning began on October 9, 2026. A prototype with a dashboard and a Dogs Directory runs in the iOS Simulator using fictional sample data. It is not yet connected to a backend or real data, and records cannot be added or edited. All other features below are planned.
+> **Project status: Early development (v0.3).** Project planning began on October 9, 2026. A prototype with a dashboard, a Dogs Directory, and a Clients Directory runs in the iOS Simulator using fictional sample data. It is not yet connected to a backend or real data, and records cannot be added or edited. All other features below are planned.
 
 ## App Preview
 
@@ -11,13 +11,20 @@ An internal iPhone app for **K9 Advocates LLC**, a dog training, boarding, and d
   <img src="docs/screenshots/dogs-directory-v0.2.png" alt="K9 Advocates Mobile v0.2 Dogs Directory with six fictional records, circular photos, and name search" width="240">
 </p>
 
-<p align="center"><em>Dashboard v0.1 and Dogs Directory v0.2 on the iPhone 16 Pro simulator. All client and dog data shown is fictional sample data.</em></p>
+<p align="center">
+  <img src="docs/screenshots/clients-directory-v0.3.png" alt="K9 Advocates Mobile v0.3 Clients Directory with fictional clients and name search" width="240">
+  <img src="docs/screenshots/client-profile-morgan-v0.3.png" alt="K9 Advocates Mobile v0.3 Morgan Ellis client profile with fictional contact details and linked dog Atlas" width="240">
+</p>
+
+<p align="center"><em>Dashboard v0.1, Dogs Directory v0.2, and Clients Directory and profile v0.3 on the iPhone 16 Pro simulator. All client and dog data shown is fictional sample data.</em></p>
 
 ## Current Prototype
 
 - **Dashboard (v0.1):** today's service counts, arrivals and departures, scheduled dogs, and service filters.
 - **Dogs Directory (v0.2):** six fictional dogs, search by dog name, and read-only dog profiles with circular photos. Dogs without a photo show their initial.
-- **Navigation:** switch between Dashboard and Dogs.
+- **Clients Directory (v0.3):** six fictional clients, search by client name, and read-only client profiles with phone, email, and linked dogs.
+- **Dog and owner links (v0.3):** a dog's profile links to its owner, and a client's profile links to each of their dogs.
+- **Navigation:** switch between Dashboard, Dogs, and Clients.
 
 ## Technology
 
@@ -36,8 +43,8 @@ An internal iPhone app for **K9 Advocates LLC**, a dog training, boarding, and d
 |---|---|
 | Administrator authentication | PLANNED |
 | Business dashboard | IN PROGRESS (v0.1 prototype with sample data) |
-| Client and dog profiles | IN PROGRESS (v0.2 dog directory and read-only dog profiles with sample data) |
-| Booking calendar | PLANNED |
+| Client and dog profiles | IN PROGRESS (read-only dog profiles in v0.2 and client profiles in v0.3, with sample data) |
+| Booking calendar | PLANNED (next milestone; see [Roadmap](#roadmap)) |
 | Boarding, daycare, and training management | PLANNED |
 | Payments and tips | PLANNED |
 | Website inquiry management | PLANNED |
@@ -45,6 +52,16 @@ An internal iPhone app for **K9 Advocates LLC**, a dog training, boarding, and d
 | Apple Calendar integration | PLANNED (future) |
 | Quo integration | Possible future feature (not in initial MVP) |
 | Customer portal | Possible later phase |
+
+## Roadmap
+
+**Next milestone: Calendar** (planned, not started)
+
+- A dedicated Calendar tab.
+- A vertically scrolling monthly booking calendar.
+- Days with bookings highlighted.
+- Tap a date to see every dog scheduled that day, including overnight stays, arrivals, and departures.
+- Later: boarding-capacity indicators and website booking integration.
 
 The existing K9 Advocates desktop Hub (Python/Streamlit with SQLite) is a separate project. Any future connection to it would go through a secure backend.
 
@@ -67,7 +84,7 @@ npm run ios
 
 ## Screenshots
 
-See [App Preview](#app-preview) for the dashboard and Dogs Directory prototypes. More screenshots will be added as features are implemented.
+See [App Preview](#app-preview) for genuine iPhone 16 Pro simulator captures of the dashboard, Dogs Directory, Clients Directory, and a client profile.
 
 ## Development Approach
 

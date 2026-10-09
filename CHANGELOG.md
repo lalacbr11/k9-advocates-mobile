@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-09 — Clients & Owners
+
+### Added
+- Clients tab with a Clients Directory of six fictional clients and search by client name.
+- Read-only client profiles with phone, email, and linked dogs.
+- Links from a dog's profile to its owner and from a client's profile to each of their dogs, with back links that name the previous screen.
+- Seven automated tests for clients and profile navigation (13 in total).
+- QA record for Clients & Owners (`docs/qa/v0.3-clients-owners-qa.md`).
+- Clients Directory and client profile screenshots (`docs/screenshots/clients-directory-v0.3.png`, `docs/screenshots/client-profile-morgan-v0.3.png`) shown in the README App Preview.
+- Calendar milestone added to the README roadmap.
+
+### Changed
+- Owner details moved out of the dog records into shared client records with stable IDs (`src/data/clientRecords.ts`). Dogs refer to their owner by `clientId`.
+- App version updated to 0.3.0 in `app.json`, `package.json`, and `package-lock.json`.
+- `AGENTS.md`, `tests/README.md`, and the README updated for the Clients feature.
+
 ## [0.2.0] - 2026-10-09 — Dogs Directory
 
 ### Added

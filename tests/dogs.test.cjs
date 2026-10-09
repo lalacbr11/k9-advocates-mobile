@@ -30,7 +30,7 @@ test('shared demo records have unique IDs and complete profile and schedule deta
   assert.equal(dogs.length, 6);
   assert.equal(new Set(dogs.map(dog => dog.id)).size, dogs.length);
   for (const dog of dogs) {
-    for (const key of ['id', 'name', 'owner', 'breed', 'age', 'weight', 'sex', 'service', 'notes', 'scheduleDetail']) {
+    for (const key of ['id', 'name', 'clientId', 'breed', 'age', 'weight', 'sex', 'service', 'notes', 'scheduleDetail']) {
       assert.ok(typeof dog[key] === 'string' && dog[key].trim(), `${dog.id}: ${key}`);
     }
   }

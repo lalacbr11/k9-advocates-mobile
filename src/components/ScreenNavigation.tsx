@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { theme } from '../theme';
 
-export type Tab = 'Dashboard' | 'Dogs';
+export type Tab = 'Dashboard' | 'Dogs' | 'Clients';
 const { colors, typography, spacing, borderRadius } = theme;
 
 export default function ScreenNavigation({ active, onSelect }: {
@@ -10,7 +10,7 @@ export default function ScreenNavigation({ active, onSelect }: {
 }) {
   return (
     <View style={styles.bar}>
-      {(['Dashboard', 'Dogs'] as const).map((tab) => (
+      {(['Dashboard', 'Dogs', 'Clients'] as const).map((tab) => (
         <Pressable key={tab} accessibilityRole="tab" accessibilityState={{ selected: active === tab }}
           onPress={() => onSelect(tab)} style={({ pressed }) => [styles.tab, active === tab && styles.selected, pressed && styles.pressed]}>
           <Text style={[styles.label, active === tab && styles.selectedLabel]}>{tab}</Text>

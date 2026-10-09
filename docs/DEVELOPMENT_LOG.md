@@ -173,7 +173,7 @@ None recorded.
 ## 2026-10-09 — v0.2 Dogs Directory
 
 **Milestone:** v0.2 — Dogs Directory
-**Commit:** Not yet committed
+**Commit:** `134f7f8`
 
 ### Work Completed
 - Added Dashboard and Dogs navigation at the top of each screen. Switching tabs keeps the dashboard mounted, so its filter and scroll position are preserved. No navigation library was added.
@@ -232,14 +232,14 @@ Simulator testing was manual. The saved automated tests cover data and logic onl
 None recorded.
 
 ### Open Items
-- **App version (resolved in this session, pending commit):** `app.json`, `package.json`, and `package-lock.json` now show version `0.2.0`.
-- **Duplicate sample data (resolved in this session, pending commit):** The dashboard now uses the shared records in `src/data/dogs.ts` instead of its own copy.
-- **Screenshot (resolved in this session, pending commit):** The README now shows the Dogs Directory screenshot alongside the dashboard screenshot.
-- **Dashboard regression after refactor (resolved in this session, pending commit):** The project owner checked the dashboard in the simulator after the final refactor; it passed (TC-09 in the QA record).
-- **AGENTS.md (resolved in this session, pending commit):** Updated for the multi-screen structure, the shared data and logic modules, and `npm test`.
+- **App version (resolved in `134f7f8`):** `app.json`, `package.json`, and `package-lock.json` now show version `0.2.0`.
+- **Duplicate sample data (resolved in `134f7f8`):** The dashboard now uses the shared records in `src/data/dogs.ts` instead of its own copy.
+- **Screenshot (resolved in `134f7f8`):** The README now shows the Dogs Directory screenshot alongside the dashboard screenshot.
+- **Dashboard regression after refactor (resolved in `134f7f8`):** The project owner checked the dashboard in the simulator after the final refactor; it passed (TC-09 in the QA record).
+- **AGENTS.md (resolved in `134f7f8`):** Updated for the multi-screen structure, the shared data and logic modules, and `npm test`.
 - **Untested scenarios (open):** VoiceOver, physical-device testing, a manual re-check of the Dogs Directory and profiles after the final refactor, and the other scenarios listed as not tested in the QA record.
-- **Arrivals and departures data (resolved in this session, pending commit):** Arrivals and departures now refer to the shared dog records by ID, and the "more dogs" count is calculated instead of fixed.
-- **Automated checks (resolved in this session, pending commit):** Six automated tests are saved in `tests/dogs.test.cjs` and can be re-run with `npm test`.
+- **Arrivals and departures data (resolved in `134f7f8`):** Arrivals and departures now refer to the shared dog records by ID, and the "more dogs" count is calculated instead of fixed.
+- **Automated checks (resolved in `134f7f8`):** Six automated tests are saved in `tests/dogs.test.cjs` and can be re-run with `npm test`.
 - **Visual refinements (open):** Carried over from v0.1.
 
 ### Not Yet Decided
@@ -247,3 +247,75 @@ None recorded.
 - Backend architecture
 - Cloud database provider
 - Authentication service
+
+---
+
+## 2026-10-09 — v0.3 Clients & Owners
+
+**Milestone:** v0.3 — Clients & Owners
+**Commit:** Not yet committed
+
+### Work Completed
+- Added a **Clients** tab next to Dashboard and Dogs.
+- Added a Clients Directory with six fictional clients. Each card shows the client's name, phone number, and linked dogs. Search matches part of a client's name, ignoring case and leading or trailing spaces. A "No clients found" message is shown when nothing matches.
+- Added read-only client profiles showing phone, email, and linked dogs. Phone and email can be selected and copied but are not tappable links.
+- Moved owner details out of the dog records into shared client records (`src/data/clientRecords.ts`) with stable IDs (`client-001` to `client-006`). Each dog now refers to its owner by `clientId`.
+- Dog profiles now show the owner as a link to the client profile, and client profiles link to each of their dogs.
+- The back link on a profile now names the previous screen (for example, "‹ Atlas" or "‹ Clients directory"). Opening a profile that is already in the history returns to it instead of adding another step, so moving between a dog and its owner does not build an endless back trail.
+- Codex added seven automated tests for clients and profile navigation (`tests/clients.test.cjs`), bringing the total to 13.
+- Release preparation: Codex updated the app version to `0.3.0` in `app.json`, `package.json`, and `package-lock.json`, and added two iPhone 16 Pro simulator screenshots (`docs/screenshots/clients-directory-v0.3.png` and `docs/screenshots/client-profile-morgan-v0.3.png`), which the README now shows.
+
+### Files Added or Changed
+- Added: `src/data/clientRecords.ts`, `src/logic/clients.ts`, `src/logic/navigation.ts`, `src/components/ClientCard.tsx`, `src/screens/ClientsScreen.tsx`, `src/screens/ClientProfileScreen.tsx`, `tests/clients.test.cjs`, `docs/screenshots/clients-directory-v0.3.png`, `docs/screenshots/client-profile-morgan-v0.3.png`, `docs/qa/v0.3-clients-owners-qa.md`
+- Changed: `App.tsx`, `app.json`, `package.json`, `package-lock.json`, `src/components/DogCard.tsx`, `src/components/ScreenNavigation.tsx`, `src/data/dogRecords.ts`, `src/data/dogs.ts`, `src/screens/DogProfileScreen.tsx`, `scripts/run-tests.cjs`, `tests/dogs.test.cjs`, `tests/README.md`, `AGENTS.md`, `README.md`, `CHANGELOG.md`, `docs/DEVELOPMENT_LOG.md`, `docs/qa/v0.2-dogs-directory-qa.md`
+
+### Decisions
+| Decision | Detail |
+|---|---|
+| Shared owner records | Owner names, phone numbers, and emails live only in `src/data/clientRecords.ts`. Dogs refer to owners by stable client ID, so renaming a client updates every screen. |
+| Fictional contact details | Phone numbers use the reserved fictional range 555-0100 to 555-0199, and emails use the reserved `example.com` domain. |
+| Read-only profiles | Client and dog profiles cannot be edited, and phone and email are not tappable links yet. |
+| Profile navigation | Profile history is kept in `App.tsx` using pure functions in `src/logic/navigation.ts`. Switching tabs clears the history. A navigation library is still not chosen. |
+| Client search scope | Client search matches client names only, not dog names. |
+
+### Testing
+Full test steps, results, and evidence types are in [docs/qa/v0.3-clients-owners-qa.md](qa/v0.3-clients-owners-qa.md).
+
+| Test | Environment | Result |
+|---|---|---|
+| Automated test suite (`npm test`, 13 tests: 6 dogs, 7 clients and navigation) | Local, Node.js 24.14.1 | Passed: 13 of 13, reported by Codex and re-run during documentation review |
+| Type check (`npx tsc --noEmit`) and `git diff --check` | Local | Passed, reported by Codex and re-run during documentation review |
+| Existing dashboard, Dogs Directory, photos, and search preserved | Not stated | Reported by Codex; no manual evidence recorded |
+| Clients Directory shows six fictional clients | iPhone 16 Pro simulator, iOS 18.6 | Passed: confirmed by screenshot |
+| Morgan Ellis's profile shows phone, email, and linked dog Atlas with photo | iPhone 16 Pro simulator, iOS 18.6 | Passed: confirmed by screenshot |
+| Morgan → Atlas → Morgan navigation and back link | iPhone 16 Pro simulator, iOS 18.6 | Passed: reported by the project owner |
+| Client search: "mor" finds Morgan Ellis, "Atlas" finds no clients, clearing restores all six | iPhone 16 Pro simulator, iOS 18.6 | Passed: reported by the project owner |
+
+The automated tests cover data, search, relationships, and profile history, but not the rendered screens. Manual tests not yet run are listed in the QA record.
+
+### Known Issues
+None recorded.
+
+### Open Items
+- **Manual QA (resolved in this session, pending commit):** The Clients Directory, Morgan Ellis's profile, client → dog → client navigation, and client search were tested in the simulator and passed.
+- **Screenshots (resolved in this session, pending commit):** Simulator screenshots of the Clients Directory and Morgan Ellis's profile were added to the README.
+- **App version (resolved in this session, pending commit):** `app.json`, `package.json`, and `package-lock.json` now show `0.3.0`.
+- **Remaining manual tests (open):** Dog → owner → back from the Dogs tab, the no-loop check from the Dogs tab, the "No clients found" message, tab switching while on a profile, and a manual regression check of the dashboard and Dogs Directory have not been tested.
+- **Older screenshots (open):** The v0.1 dashboard and v0.2 Dogs Directory screenshots are labeled with their versions but no longer show the current three-tab navigation.
+- **Untested scenarios (open):** Carried over from v0.2: VoiceOver, physical-device testing, and photo-load failure fallback.
+- **Visual refinements (open):** Carried over from v0.1.
+
+### Not Yet Decided
+- Navigation library
+- Backend architecture
+- Cloud database provider
+- Authentication service
+
+### Next Steps
+**Next milestone: v0.4 Calendar** (planned, not started)
+
+- Add a dedicated Calendar tab.
+- A vertically scrolling monthly booking calendar.
+- Highlight days that have bookings.
+- Tap a date to see every dog scheduled that day, including overnight stays, arrivals, and departures.
+- Later: boarding-capacity indicators and website booking integration.

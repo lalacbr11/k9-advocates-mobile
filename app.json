@@ -3,7 +3,7 @@
   "expo": {
     "name": "K9 Advocates Mobile",
     "slug": "k9-advocates-mobile",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",

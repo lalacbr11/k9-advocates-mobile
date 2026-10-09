@@ -7,7 +7,7 @@ const { colors, typography, spacing, borderRadius } = theme;
 
 export default function DogCard({ dog, onPress }: { dog: Dog; onPress: () => void }) {
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={`View ${dog.name}'s profile, owner ${dog.owner}`}
+    <Pressable accessibilityRole="button" accessibilityLabel={`View ${dog.name}'s profile, owner ${dog.client.name}`}
       onPress={onPress} style={({ pressed }) => [styles.card, pressed && styles.pressed]}>
       <DogAvatar name={dog.name} photo={dog.photo} />
       <View style={styles.content}>
@@ -15,7 +15,7 @@ export default function DogCard({ dog, onPress }: { dog: Dog; onPress: () => voi
           <Text style={styles.name}>{dog.name}</Text>
           <Text style={styles.service}>{dog.service} ›</Text>
         </View>
-        <Text style={styles.owner}>Owner: {dog.owner}</Text>
+        <Text style={styles.owner}>Owner: {dog.client.name}</Text>
         <Text style={styles.detail}>{dog.breed} · {dog.age}</Text>
       </View>
     </Pressable>
