@@ -2,15 +2,22 @@
 
 An internal iPhone app for **K9 Advocates LLC**, a dog training, boarding, and daycare business. The app is designed for the business's administrators and is being developed as a public software development and QA portfolio project.
 
-> **Project status: Early development (v0.1).** Project planning began on October 9, 2026. The Expo project has been initialized, and a dashboard prototype using fictional sample data runs in the iOS Simulator. It is not yet connected to a backend or real data. All other features below are planned.
+> **Project status: Early development (v0.2).** Project planning began on October 9, 2026. A prototype with a dashboard and a Dogs Directory runs in the iOS Simulator using fictional sample data. It is not yet connected to a backend or real data, and records cannot be added or edited. All other features below are planned.
 
 ## App Preview
 
 <p align="center">
-  <img src="docs/screenshots/dashboard-v0.1.png" alt="K9 Advocates Mobile v0.1 dashboard prototype showing today's service counts, arrivals and departures, and scheduled dogs" width="300">
+  <img src="docs/screenshots/dashboard-v0.1.png" alt="K9 Advocates Mobile v0.1 dashboard prototype showing today's service counts, arrivals and departures, and scheduled dogs" width="240">
+  <img src="docs/screenshots/dogs-directory-v0.2.png" alt="K9 Advocates Mobile v0.2 Dogs Directory with six fictional records, circular photos, and name search" width="240">
 </p>
 
-<p align="center"><em>The v0.1 dashboard prototype on the iPhone 16 Pro simulator. All client and dog data shown is fictional sample data.</em></p>
+<p align="center"><em>Dashboard v0.1 and Dogs Directory v0.2 on the iPhone 16 Pro simulator. All client and dog data shown is fictional sample data.</em></p>
+
+## Current Prototype
+
+- **Dashboard (v0.1):** today's service counts, arrivals and departures, scheduled dogs, and service filters.
+- **Dogs Directory (v0.2):** six fictional dogs, search by dog name, and read-only dog profiles with circular photos. Dogs without a photo show their initial.
+- **Navigation:** switch between Dashboard and Dogs.
 
 ## Technology
 
@@ -29,7 +36,7 @@ An internal iPhone app for **K9 Advocates LLC**, a dog training, boarding, and d
 |---|---|
 | Administrator authentication | PLANNED |
 | Business dashboard | IN PROGRESS (v0.1 prototype with sample data) |
-| Client and dog profiles | PLANNED |
+| Client and dog profiles | IN PROGRESS (v0.2 dog directory and read-only dog profiles with sample data) |
 | Booking calendar | PLANNED |
 | Boarding, daycare, and training management | PLANNED |
 | Payments and tips | PLANNED |
@@ -60,7 +67,7 @@ npm run ios
 
 ## Screenshots
 
-See [App Preview](#app-preview) for the v0.1 dashboard prototype. More screenshots will be added as features are implemented.
+See [App Preview](#app-preview) for the dashboard and Dogs Directory prototypes. More screenshots will be added as features are implemented.
 
 ## Development Approach
 
@@ -76,6 +83,20 @@ This repository is public. It does not contain, and must never contain, real cus
 
 - [CHANGELOG.md](CHANGELOG.md): notable changes and milestones
 - [docs/DEVELOPMENT_LOG.md](docs/DEVELOPMENT_LOG.md): development history and technical decisions
+- [docs/qa/](docs/qa/): QA test records
+- [tests/README.md](tests/README.md): how to run the automated tests (`npm test`)
+
+## Photo Credits
+
+The dog photos represent fictional dogs only and do not show actual K9 Advocates clients. They are from [Pexels](https://www.pexels.com/) and used under the [Pexels License](https://www.pexels.com/license/). Credits are given voluntarily and do not imply endorsement by the photographers.
+
+| Fictional dog | Photographer | Source |
+|---|---|---|
+| Atlas | Nano Erdozain | [Pexels](https://www.pexels.com/photo/close-up-of-a-german-shepherd-dog-18058222/) |
+| Willow | Eduardo López | [Pexels](https://www.pexels.com/photo/portrait-of-black-labrador-retriever-16618519/) |
+| Finn | Jay's Photography | [Pexels](https://www.pexels.com/photo/border-collie-in-black-and-white-16471124/) |
+| Hazel | Zach Ward | [Pexels](https://www.pexels.com/photo/portrait-of-golden-retriever-16876004/) |
+| Otis | JacLou- DL | [Pexels](https://www.pexels.com/photo/happy-brown-standard-poodle-in-green-field-34265054/) |
 
 ## License and Brand Ownership
 
