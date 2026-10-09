@@ -147,3 +147,17 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# Expo local development files
+.expo/
+.expo-shared/
+
+# macOS files
+.DS_Store
+
+# Local AI assistant configuration
+.claude/
+
+# Native build outputs
+ios/Pods/
+android/.gradle/
