@@ -1,11 +1,12 @@
+
 {
   "expo": {
-    "name": "k9-mobile-starter",
-    "slug": "k9-mobile-starter",
-    "version": "1.0.0",
+    "name": "K9 Advocates Mobile",
+    "slug": "k9-advocates-mobile",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "ios": {
       "supportsTablet": true
     },

@@ -1,41 +1,70 @@
-This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
+# AGENTS.md — K9 Advocates Mobile
 
-## Expo has changed — do not trust your training data
+Guidance for AI coding assistants working in this repository.
 
-Expo ships breaking changes every SDK release. APIs you remember are likely renamed, moved, or removed. Before writing any code that touches an Expo, EAS, or React Native API:
+K9 Advocates Mobile is an internal iPhone app for K9 Advocates LLC, built with Expo, React Native, and TypeScript. It is in early development. Prioritize mobile-first patterns, clear TypeScript, and native iPhone conventions.
 
-1. Read the major version of the `expo` package in `package.json`.
-2. Fetch the matching versioned docs: `https://docs.expo.dev/versions/v<major>.0.0/`
-3. For anything else, fetch https://docs.expo.dev/llms.txt — an index of all Expo docs with corrections to common LLM misconceptions. Follow its links to the specific page you need; never answer from memory.
+## Project configuration
+
+| Item | Value |
+|---|---|
+| Expo SDK | 57 |
+| React Native | 0.86.3 |
+| Language | TypeScript (`strict: true`, extends `expo/tsconfig.base`) |
+| Package manager | npm (`package-lock.json`) |
+| Entry point | `index.ts` (registers `App` with `registerRootComponent`) |
+| Current screen | `App.tsx` |
+| Local testing | iPhone 16 Pro simulator with Expo Go |
+
+## Current architecture
+
+- The app is a single screen. `index.ts` registers the root component from `App.tsx`.
+- No navigation library is installed. Expo Router is **not** used, and there is no `src/app/` directory.
+- Navigation architecture will be decided when multiple screens are implemented. Do not add a navigation library or restructure folders unless the developer asks for it.
+- There is no backend, database, or authentication service yet. Do not add one without an explicit request.
+
+## Expo version: verify, don't assume
+
+Expo ships breaking changes with every SDK release. Before writing code that touches an Expo or React Native API:
+
+1. Confirm the `expo` major version in `package.json` (currently 57).
+2. Use the matching versioned docs: https://docs.expo.dev/versions/v57.0.0/
+3. For anything else, start from https://docs.expo.dev/llms.txt and follow its links. Don't rely on memory.
 
 ## Commands
 
-Use `bunx` instead of `npx` if the project uses bun (`bun.lock` present).
-
 ```bash
-npx expo install <package>  # ALWAYS use instead of npm/yarn/pnpm/bun add — resolves SDK-compatible versions
+npm install                 # install dependencies from package-lock.json
+npm run ios                 # start the dev server and open the iOS Simulator
 npx expo start              # start the dev server
-npx expo lint               # lint
-npx tsc --noEmit            # typecheck
+npx expo install <package>  # add packages; resolves SDK-compatible versions
+npx tsc --noEmit            # type check
 npx expo-doctor             # diagnose dependency and config issues
-npx expo install --fix      # fix incompatible package versions
 ```
 
-Run lint and typecheck before declaring any task done.
-
-## Navigation & Routing
-
-- Use **Expo Router** for all navigation. Routes live in `src/app/` — every file there is a screen, `_layout.tsx` files define navigators. Keep non-route code (components, hooks, utils) outside `src/app/`.
-- Import `Link`, `router`, and `useLocalSearchParams` from `expo-router`.
-- Docs: https://docs.expo.dev/router/introduction.md
-
-## Building with EAS
-
-Use EAS to build, sign, and submit the app in the cloud (`eas build`, `eas submit`) and to ship over-the-air updates (`eas update`) — no local Xcode or Android Studio required. Run EAS CLI as `bunx eas-cli <command>` in Bun projects, or `npx eas-cli@latest <command>` otherwise; substitute that for bare `eas` in docs examples.
-Docs: https://docs.expo.dev/eas/index.md
+- Always use `npx expo install` instead of `npm install <package>` to add Expo-compatible packages.
+- Run `npx tsc --noEmit` before declaring a task done.
+- No linter is configured. Don't run or require linting unless a lint configuration is added.
 
 ## Rules
 
-- If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
-- Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
-- Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
+- **Expo Go compatibility:** Before adding a library with native code, verify whether it is supported by the installed Expo Go version. If the required native module is not included, explain that a development build will be necessary.
+- **Native folders:** `ios/` and `android/` are not committed and are generated when needed. Never create or edit them by hand; configure native behavior in `app.json`.
+- **Dependencies and configuration:** Don't add dependencies or change `package.json`, `app.json`, `tsconfig.json`, or `.gitignore` unless the task requires it, and explain the change.
+- **Prefer Expo modules** over third-party libraries when one fits.
+
+## Protected systems
+
+- The existing **K9 Advocates desktop Hub** (Python/Streamlit) and its **SQLite database** are a separate project. Never read from, write to, modify, migrate, or connect to them from this repository. Any future connection will go through a secure backend that has not been designed yet.
+
+## Public repository
+
+This repository is public and used as a professional portfolio.
+
+- Never commit real customer or dog data, credentials, API keys, tokens, `.env` files, production databases, or other secrets.
+- Use only fictional client and dog data in code, tests, and examples.
+- Use only approved K9 Advocates brand assets.
+
+## Design direction
+
+Follow the K9 Advocates brand identity (https://k9advocatesnj.com): warm cream, charcoal, and muted gold tones, elegant typography, a premium feel, and native iPhone navigation and layouts.

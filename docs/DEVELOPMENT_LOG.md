@@ -68,3 +68,54 @@ None.
 - Initialize the React Native, Expo, and TypeScript project.
 - Test the app on an iPhone using Expo Go, if it's compatible with the selected SDK and features.
 - Begin implementing the first dashboard components.
+
+---
+
+## 2026-10-09 — v0.1 Initial Development: Project Setup and First Launch
+
+**Milestone:** v0.1 — Initial Development
+**Commit:** `4a23a45`
+
+### Work Completed
+- Initialized the React Native project with Expo and TypeScript.
+- Configured the local development environment, including installing Xcode and setting up the iPhone 16 Pro simulator.
+- Created a dark-themed placeholder welcome screen in `App.tsx` showing "K9 ADVOCATES", "Mobile Management", and a welcome message.
+- Updated `.gitignore` to exclude local Expo files (`.expo/`, `.expo-shared/`), macOS system files, local AI assistant configuration, and native build outputs (`ios/Pods/`, `android/.gradle/`). This completes the pending setup task from the kickoff session.
+- Committed and pushed the working project to GitHub.
+
+### Files Added or Changed
+- Added: `App.tsx`, `index.ts`, `app.json`, `package.json`, `package-lock.json`, `tsconfig.json`, `assets/`, `AGENTS.md`, `LICENSE`
+- Changed: `.gitignore`
+
+### Decisions
+| Decision | Detail |
+|---|---|
+| Expo SDK | SDK 57, as installed by the project template (`expo ~57.0.27`, `react-native 0.86.3`, `react 19.2.3`, `typescript ~6.0.3`). |
+| App entry point | Single-screen `App.tsx` for the initial launch. Navigation has not been introduced yet. |
+| Local testing | iOS Simulator (iPhone 16 Pro) with Expo Go. |
+
+### Testing
+| Test | Environment | Result |
+|---|---|---|
+| Launch the app and display the welcome screen | Expo Go, iPhone 16 Pro simulator | Passed: the app launched and the welcome screen displayed |
+
+Testing was manual. No automated tests, linting, or type checking were recorded for this session.
+
+### Known Issues
+None recorded.
+
+### Open Items
+- **License (open, under review):** A `LICENSE` file was committed with the Expo project template and appears to conflict with the README statement that no software license has been granted. It will be reviewed before any decision is made.
+- `AGENTS.md`, an AI coding-assistant guidance file from the Expo template, was committed. Its guidance on Expo Router and the `src/app/` structure does not match the current single-file `App.tsx` setup. Decide whether to keep, adapt, or remove it.
+- The app name and version in `app.json` and `package.json` are still the template values (`k9-mobile-starter`, `1.0.0`) and do not match the project name or the v0.1 milestone.
+- `app.json` sets `userInterfaceStyle` to `light`, while the welcome screen uses a dark theme.
+- `.gitignore` does not yet exclude iOS signing and credential files (for example `*.p8`, `*.p12`, `*.mobileprovision`). Address this before the first build is created.
+- The welcome screen uses placeholder grays, not the K9 Advocates brand palette (warm cream, charcoal, muted gold). Brand styling is planned for the dashboard milestone.
+
+### Not Yet Decided
+- Backend architecture
+- Cloud database provider
+- Authentication service
+
+### Next Steps
+**Next milestone: Design and implement the first K9 Advocates Mobile dashboard.**

@@ -2,14 +2,14 @@
 
 An internal iPhone app for **K9 Advocates LLC**, a dog training, boarding, and daycare business. The app is designed for the business's administrators and is being developed as a public software development and QA portfolio project.
 
-> **Project status: Planning.** Project planning began on October 9, 2026. Application development has not yet started. All features below are planned.
+> **Project status: Early development (v0.1).** Project planning began on October 9, 2026. The Expo project has been initialized and launched in the iOS Simulator with a placeholder welcome screen. All features below are planned.
 
 ## Technology
 
 | Area | Selection | Status |
 |---|---|---|
 | Framework | React Native | Selected |
-| Toolchain | Expo | Selected (SDK version not yet decided) |
+| Toolchain | Expo | Selected (SDK 57) |
 | Language | TypeScript | Selected |
 | Backend architecture | — | Not yet decided |
 | Cloud database | — | Not yet decided |
@@ -39,7 +39,16 @@ The app will follow the existing K9 Advocates brand identity: warm cream, charco
 
 ## Setup
 
-Setup instructions will be added once the Expo project is initialized.
+Running the app on the iOS Simulator requires a Mac with Xcode installed, plus Node.js and npm.
+
+```bash
+git clone https://github.com/lalacbr11/k9-advocates-mobile.git
+cd k9-advocates-mobile
+npm install
+npm run ios
+```
+
+`npm run ios` starts the Expo development server and opens the app in the iOS Simulator using Expo Go.
 
 ## Screenshots
 
