@@ -47,12 +47,9 @@ Screenshots will be added as features are implemented.
 
 ## Development Approach
 
-This project is developed and owned by **Laura Neugebauer**, with AI assistance:
+This project is developed and maintained by **Laura Neugebauer**, using AI-assisted development and documentation.
 
-- **ChatGPT** supports development planning, coding, and QA.
-- **Claude** supports technical documentation.
-
-AI tools assist with the work. Laura directs the project, makes the decisions, and reviews and verifies the results.
+AI tools support planning, coding, troubleshooting, and QA documentation. Laura directs the project, makes development decisions, and reviews and verifies the work.
 
 ## Data and Privacy
 
