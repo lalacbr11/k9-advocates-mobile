@@ -2,7 +2,15 @@
 
 An internal iPhone app for **K9 Advocates LLC**, a dog training, boarding, and daycare business. The app is designed for the business's administrators and is being developed as a public software development and QA portfolio project.
 
-> **Project status: Early development (v0.1).** Project planning began on October 9, 2026. The Expo project has been initialized and launched in the iOS Simulator with a placeholder welcome screen. All features below are planned.
+> **Project status: Early development (v0.1).** Project planning began on October 9, 2026. The Expo project has been initialized, and a dashboard prototype using fictional sample data runs in the iOS Simulator. It is not yet connected to a backend or real data. All other features below are planned.
+
+## App Preview
+
+<p align="center">
+  <img src="docs/screenshots/dashboard-v0.1.png" alt="K9 Advocates Mobile v0.1 dashboard prototype showing today's service counts, arrivals and departures, and scheduled dogs" width="300">
+</p>
+
+<p align="center"><em>The v0.1 dashboard prototype on the iPhone 16 Pro simulator. All client and dog data shown is fictional sample data.</em></p>
 
 ## Technology
 
@@ -20,7 +28,7 @@ An internal iPhone app for **K9 Advocates LLC**, a dog training, boarding, and d
 | Feature | Status |
 |---|---|
 | Administrator authentication | PLANNED |
-| Business dashboard | PLANNED |
+| Business dashboard | IN PROGRESS (v0.1 prototype with sample data) |
 | Client and dog profiles | PLANNED |
 | Booking calendar | PLANNED |
 | Boarding, daycare, and training management | PLANNED |
@@ -52,7 +60,7 @@ npm run ios
 
 ## Screenshots
 
-Screenshots will be added as features are implemented.
+See [App Preview](#app-preview) for the v0.1 dashboard prototype. More screenshots will be added as features are implemented.
 
 ## Development Approach
 

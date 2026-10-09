@@ -105,12 +105,12 @@ Testing was manual. No automated tests, linting, or type checking were recorded 
 None recorded.
 
 ### Open Items
-- **License (open, under review):** A `LICENSE` file was committed with the Expo project template and appears to conflict with the README statement that no software license has been granted. It will be reviewed before any decision is made.
-- `AGENTS.md`, an AI coding-assistant guidance file from the Expo template, was committed. Its guidance on Expo Router and the `src/app/` structure does not match the current single-file `App.tsx` setup. Decide whether to keep, adapt, or remove it.
-- The app name and version in `app.json` and `package.json` are still the template values (`k9-mobile-starter`, `1.0.0`) and do not match the project name or the v0.1 milestone.
-- `app.json` sets `userInterfaceStyle` to `light`, while the welcome screen uses a dark theme.
-- `.gitignore` does not yet exclude iOS signing and credential files (for example `*.p8`, `*.p12`, `*.mobileprovision`). Address this before the first build is created.
-- The welcome screen uses placeholder grays, not the K9 Advocates brand palette (warm cream, charcoal, muted gold). Brand styling is planned for the dashboard milestone.
+- **License (resolved in `1f8f524`):** A `LICENSE` file was committed with the Expo project template and appeared to conflict with the README statement that no software license has been granted. The Expo template `LICENSE` was removed.
+- **AGENTS.md (resolved in `1f8f524`):** `AGENTS.md`, an AI coding-assistant guidance file from the Expo template, was committed. Its guidance on Expo Router and the `src/app/` structure did not match the single-file `App.tsx` setup. It was updated to reflect the actual project structure.
+- **App name and version (resolved in `1f8f524`):** The app name and version in `app.json` and `package.json` were the template values (`k9-mobile-starter`, `1.0.0`). They were corrected to K9 Advocates Mobile v0.1.0.
+- **Interface style (resolved in `1f8f524`):** `app.json` set `userInterfaceStyle` to `light`, while the welcome screen uses a dark theme. It was set to `dark`.
+- **iOS signing files (open):** `.gitignore` does not yet exclude iOS signing and credential files (for example `*.p8`, `*.p12`, `*.mobileprovision`). Address this before the first build is created.
+- **Brand palette (open):** The welcome screen uses placeholder grays, not the K9 Advocates brand palette (warm cream, charcoal, muted gold). Replace them with the approved brand palette; brand styling is planned for the dashboard milestone.
 
 ### Not Yet Decided
 - Backend architecture
@@ -119,3 +119,51 @@ None recorded.
 
 ### Next Steps
 **Next milestone: Design and implement the first K9 Advocates Mobile dashboard.**
+
+---
+
+## 2026-10-09 — v0.1 Dashboard Prototype
+
+**Milestone:** v0.1 — Dashboard
+**Commit:** Not yet committed
+
+### Work Completed
+- Codex created `src/theme.ts` with brand tokens inspired by the K9 Advocates website: colors, typography, spacing, and border radius.
+- Codex replaced the placeholder welcome screen in `App.tsx` with a working dashboard prototype that uses fictional sample data.
+- The dashboard shows service counts, arrivals and departures, scheduled dogs, and service filters that work.
+- Nina, the business stakeholder, asked for the most important daily information to fit on the first iPhone screen without scrolling.
+- Codex made the layout more compact and checked it in the iPhone 16 Pro simulator.
+- Nina approved the compact layout.
+
+### Files Added or Changed
+- Added: `src/theme.ts`
+- Changed: `App.tsx`, `.gitignore`
+
+### Decisions
+| Decision | Detail |
+|---|---|
+| Dashboard layout | The compact layout is approved for v0.1. Visual refinements may follow later. |
+| Layout trade-off | Laura preferred the more spacious original design but approved the compact version because it better supports daily operations. |
+| Theme tokens | Brand colors, typography, spacing, and border radius are defined in one place, `src/theme.ts`. |
+| Sample data | The dashboard uses fictional sample data only. |
+
+### Testing
+| Test | Environment | Result |
+|---|---|---|
+| Type check (`npx tsc --noEmit`) | Local | Passed |
+| Compact layout fits the most important daily information on the first screen without scrolling | Expo Go, iPhone 16 Pro simulator | Passed: checked by Codex and approved by Nina |
+
+Testing was manual, except for the type check. No automated tests were recorded for this session.
+
+### Known Issues
+None recorded.
+
+### Open Items
+- **Brand palette (resolved in this session, pending commit):** The placeholder welcome screen colors were replaced by the dashboard, which uses the brand palette defined in `src/theme.ts`.
+- **iOS signing files (resolved in this session, pending commit):** `.gitignore` now excludes Apple signing credentials and provisioning profiles (`*.p8`, `*.p12`, `*.pfx`, `*.key`, `*.mobileprovision`, `*.provisionprofile`) and the EAS local signing configuration (`credentials.json`).
+- **Visual refinements (open):** Possible visual refinements to the approved compact layout.
+
+### Not Yet Decided
+- Backend architecture
+- Cloud database provider
+- Authentication service

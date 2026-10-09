@@ -1,42 +1,144 @@
-
+import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { theme } from './src/theme';
+
+const { colors, typography, spacing, borderRadius } = theme;
+const services = ['Boarding', 'Daycare', 'Training'] as const;
+type Service = (typeof services)[number];
+
+// Fictional prototype data. Summary counts share this source.
+const dogs: { name: string; breed: string; service: Service; detail: string }[] = [
+  { name: 'Atlas', breed: 'German Shepherd', service: 'Boarding', detail: 'Staying overnight' },
+  { name: 'Willow', breed: 'Labrador Retriever', service: 'Daycare', detail: '8:00 AM – 5:00 PM' },
+  { name: 'Finn', breed: 'Border Collie', service: 'Training', detail: '10:00 AM · Leash skills' },
+  { name: 'Hazel', breed: 'Golden Retriever', service: 'Boarding', detail: 'Arriving at 11:30 AM' },
+  { name: 'Otis', breed: 'Standard Poodle', service: 'Training', detail: '2:00 PM · Foundations' },
+  { name: 'Cleo', breed: 'Mixed breed', service: 'Daycare', detail: '9:00 AM – 4:30 PM' },
+];
+const movements = [
+  { dog: 'Hazel', time: '11:30 AM', type: 'Arrival', service: 'Boarding' },
+  { dog: 'Cleo', time: '4:30 PM', type: 'Departure', service: 'Daycare' },
+  { dog: 'Willow', time: '5:00 PM', type: 'Departure', service: 'Daycare' },
+];
 
 export default function App() {
+  const [filter, setFilter] = useState<Service | 'All'>('All');
+  const date = new Date().toLocaleDateString('en-US', {
+    weekday: 'long', month: 'short', day: 'numeric', year: 'numeric',
+  });
+  const scheduledDogs = dogs.filter((dog) => filter === 'All' || dog.service === filter);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>K9 ADVOCATES</Text>
-      <Text style={styles.subtitle}>Mobile Management</Text>
-      <Text style={styles.message}>
-        Welcome to K9 Advocates Mobile
-      </Text>
+    <View style={styles.screen}>
       <StatusBar style="light" />
+      <ScrollView style={styles.scroll} contentContainerStyle={styles.content}
+        contentInsetAdjustmentBehavior="automatic" indicatorStyle="white">
+        <View style={styles.brand}>
+          <View style={styles.brandMark} />
+          <Text style={styles.wordmark}>K9 ADVOCATES</Text>
+          <Text style={styles.date}>{date}</Text>
+        </View>
+        <View style={styles.section}>
+          <Text accessibilityRole="header" style={styles.sectionTitle}>Today’s overview</Text>
+          <View style={styles.summaryGrid}>
+            {services.map((service) => (
+              <View key={service} style={styles.summaryCard}>
+                <Text style={styles.count}>{dogs.filter((dog) => dog.service === service).length}</Text>
+                <Text style={styles.summaryLabel}>{service}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+        <View style={styles.section}>
+          <Text accessibilityRole="header" style={styles.sectionTitle}>Arrivals & departures</Text>
+          <View style={styles.panel}>
+            {movements.map((movement, index) => (
+              <View key={movement.dog} style={[styles.movementRow, index > 0 && styles.divider]}>
+                <View style={styles.rowContent}>
+                  <Text style={styles.dogName}>{movement.dog}</Text>
+                  <Text style={styles.secondary}>{movement.type} · {movement.service}</Text>
+                </View>
+                <Text style={styles.time}>{movement.time}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+        <View style={styles.section}>
+          <Text accessibilityRole="header" style={styles.sectionTitle}>Scheduled dogs · {dogs.length}</Text>
+          <View style={styles.panel}>
+            {dogs.slice(0, 3).map((dog, index) => (
+              <View key={dog.name} style={[styles.previewRow, index > 0 && styles.divider]}>
+                <Text style={styles.dogName}>{dog.name}</Text>
+                <Text style={styles.secondary}>{dog.service}</Text>
+              </View>
+            ))}
+          </View>
+          <Text style={styles.secondary}>3 more dogs · Full schedule below</Text>
+        </View>
+        <View style={styles.section}>
+          <Text accessibilityRole="header" style={styles.sectionTitle}>Full dog schedule</Text>
+          <Text style={styles.secondary}>{dogs.length} dogs scheduled across your services</Text>
+          <View style={styles.filters}>
+            {(['All', ...services] as const).map((service) => (
+              <Pressable key={service} accessibilityRole="button"
+                accessibilityLabel={`Show ${service === 'All' ? 'all dogs' : `${service.toLowerCase()} dogs`}`}
+                accessibilityState={{ selected: filter === service }} onPress={() => setFilter(service)}
+                style={({ pressed }) => [styles.filter, filter === service && styles.selectedFilter, pressed && styles.pressed]}>
+                <Text style={[styles.filterLabel, filter === service && styles.selectedFilterLabel]}>{service}</Text>
+              </Pressable>
+            ))}
+          </View>
+          <View style={styles.panel}>
+            {scheduledDogs.map((dog, index) => (
+              <View key={dog.name} style={[styles.dogRow, index > 0 && styles.divider]}>
+                <View style={styles.dogHeading}>
+                  <Text style={styles.dogName}>{dog.name}</Text>
+                  <Text style={styles.serviceLabel}>{dog.service}</Text>
+                </View>
+                <Text style={styles.secondary}>{dog.breed}</Text>
+                <Text style={styles.dogDetail}>{dog.detail}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+        <Text style={styles.footer}>Dashboard preview · Fictional sample data</Text>
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#111827',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 24,
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    letterSpacing: 2,
-  },
-  subtitle: {
-    fontSize: 17,
-    color: '#D1D5DB',
-    marginTop: 8,
-  },
-  message: {
-    fontSize: 14,
-    color: '#9CA3AF',
-    marginTop: 40,
-  },
+  screen: { flex: 1, backgroundColor: colors.charcoal },
+  scroll: { flex: 1 },
+  content: { paddingHorizontal: spacing.lg, paddingTop: spacing.sm, paddingBottom: spacing.xxl, gap: spacing.md },
+  brand: { gap: spacing.xs, paddingVertical: spacing.sm },
+  brandMark: { width: spacing.xl, height: 2, backgroundColor: colors.mutedGold },
+  wordmark: { ...typography.subheading, fontSize: 20, lineHeight: 28, color: colors.warmCream, letterSpacing: 2 },
+  date: { ...typography.caption, color: colors.mutedGold },
+  secondary: { ...typography.caption, color: colors.mutedGray },
+  section: { gap: spacing.sm },
+  sectionTitle: { ...typography.subheading, fontSize: 20, lineHeight: 28, color: colors.warmCream },
+  summaryGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
+  summaryCard: { flexGrow: 1, flexBasis: 100, backgroundColor: colors.softCharcoal, borderRadius: borderRadius.md, padding: spacing.sm, gap: spacing.xs, borderTopWidth: 2, borderTopColor: colors.darkGold },
+  count: { ...typography.heading, color: colors.warmCream, fontSize: 28, lineHeight: 34 },
+  summaryLabel: { ...typography.body, color: colors.warmCream, fontSize: 15 },
+  panel: { backgroundColor: colors.softCharcoal, borderRadius: borderRadius.lg, paddingHorizontal: spacing.md },
+  movementRow: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: spacing.sm, paddingVertical: spacing.sm, minHeight: 60 },
+  rowContent: { flexGrow: 1, flexBasis: 160, gap: spacing.xs },
+  divider: { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.darkGold },
+  dogName: { ...typography.body, fontWeight: '500', color: colors.lightCream },
+  time: { ...typography.caption, color: colors.warmCream, fontVariant: ['tabular-nums'] },
+  filters: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm, marginTop: spacing.sm },
+  filter: { minHeight: 44, minWidth: 44, paddingHorizontal: spacing.md, paddingVertical: spacing.sm, alignItems: 'center', justifyContent: 'center', borderRadius: borderRadius.pill, backgroundColor: colors.softCharcoal },
+  selectedFilter: { backgroundColor: colors.mutedGold },
+  filterLabel: { ...typography.button, fontSize: 14, color: colors.warmCream },
+  selectedFilterLabel: { color: colors.charcoal },
+  pressed: { opacity: 0.75 },
+  previewRow: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: spacing.sm, paddingVertical: spacing.sm, minHeight: 44 },
+  dogRow: { paddingVertical: spacing.md, gap: spacing.xs },
+  dogHeading: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: spacing.sm },
+  serviceLabel: { ...typography.caption, color: colors.mutedGold },
+  dogDetail: { ...typography.caption, color: colors.warmCream, marginTop: spacing.xs },
+  footer: { ...typography.caption, color: colors.mutedGray, textAlign: 'center' },
 });

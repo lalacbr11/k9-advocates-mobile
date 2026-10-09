@@ -161,3 +161,14 @@ vite.config.ts.timestamp-*
 # Native build outputs
 ios/Pods/
 android/.gradle/
+
+# Apple signing credentials and provisioning profiles
+*.p8
+*.p12
+*.pfx
+*.key
+*.mobileprovision
+*.provisionprofile
+
+# EAS local signing configuration (may contain passwords)
+credentials.json
