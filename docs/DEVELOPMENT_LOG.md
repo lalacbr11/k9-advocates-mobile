@@ -253,7 +253,7 @@ None recorded.
 ## 2026-10-09 — v0.3 Clients & Owners
 
 **Milestone:** v0.3 — Clients & Owners
-**Commit:** Not yet committed
+**Commit:** `8ad4c3a`
 
 ### Work Completed
 - Added a **Clients** tab next to Dashboard and Dogs.
@@ -297,9 +297,9 @@ The automated tests cover data, search, relationships, and profile history, but 
 None recorded.
 
 ### Open Items
-- **Manual QA (resolved in this session, pending commit):** The Clients Directory, Morgan Ellis's profile, client → dog → client navigation, and client search were tested in the simulator and passed.
-- **Screenshots (resolved in this session, pending commit):** Simulator screenshots of the Clients Directory and Morgan Ellis's profile were added to the README.
-- **App version (resolved in this session, pending commit):** `app.json`, `package.json`, and `package-lock.json` now show `0.3.0`.
+- **Manual QA (resolved in `8ad4c3a`):** The Clients Directory, Morgan Ellis's profile, client → dog → client navigation, and client search were tested in the simulator and passed.
+- **Screenshots (resolved in `8ad4c3a`):** Simulator screenshots of the Clients Directory and Morgan Ellis's profile were added to the README.
+- **App version (resolved in `8ad4c3a`):** `app.json`, `package.json`, and `package-lock.json` now show `0.3.0`.
 - **Remaining manual tests (open):** Dog → owner → back from the Dogs tab, the no-loop check from the Dogs tab, the "No clients found" message, tab switching while on a profile, and a manual regression check of the dashboard and Dogs Directory have not been tested.
 - **Older screenshots (open):** The v0.1 dashboard and v0.2 Dogs Directory screenshots are labeled with their versions but no longer show the current three-tab navigation.
 - **Untested scenarios (open):** Carried over from v0.2: VoiceOver, physical-device testing, and photo-load failure fallback.
@@ -319,3 +319,81 @@ None recorded.
 - Highlight days that have bookings.
 - Tap a date to see every dog scheduled that day, including overnight stays, arrivals, and departures.
 - Later: boarding-capacity indicators and website booking integration.
+
+---
+
+## 2026-10-09 — v0.4 Calendar & Bookings
+
+**Milestone:** v0.4 — Calendar & Bookings
+**Commit:** Not yet committed
+
+### Work Completed
+- Moved the tab bar from the top of each screen to a bottom tab bar shared by every screen, and added a fourth tab, **Calendar**.
+- Added a Calendar screen that shows months one after another in a vertical scroll, starting at October 2026. Six months are shown at first; a **Show next six months** button adds six more each time.
+- Dates with at least one booking are highlighted in cream with a gold dot. Today's date (from the device clock) has a gold outline.
+- Tapping any date opens a separate Daily Schedule screen listing every booking on that date, with a back link to the calendar. Dates without bookings show "No bookings scheduled".
+- Each booking on the Daily Schedule shows the service, the dog's card, and the day's details: "Arrival" with time on the first day, "Departure" with time on the last day, both for same-day bookings, and "Continuing boarding stay" for days in between.
+- Tapping a dog on the Daily Schedule opens its profile. The profile's back link returns to the Daily Schedule.
+- Added nine fictional bookings (`src/data/bookings.ts`) for boarding, daycare, and training between October 2026 and January 2027, linked to the shared dogs by ID. Boarding stays span several days, including stays that cross into November and into 2027.
+- Codex moved the Dashboard onto the same booking data as the Calendar (`src/logic/schedule.ts`). Its service counts, arrivals and departures, and scheduled dogs now come from the bookings for the device's current date. The Dashboard shows the first three arrivals and departures with a count of the rest, and shows messages when nothing is scheduled. The old fixed Dashboard schedule, `src/data/dashboard.ts`, was removed.
+- Codex replaced React Native's deprecated `SafeAreaView` with `react-native-safe-area-context` ~5.7.0, which keeps the tab bar and the Daily Schedule heading clear of the Home indicator and the Dynamic Island.
+- Exploratory testing found that tapping the Calendar tab while already on it did not scroll back to the top. Codex fixed this (`shouldScrollCalendarToTop` in `src/logic/navigation.ts`), and the project owner retested it successfully.
+- Codex added twelve automated tests: seven for calendar dates and bookings (`tests/calendar.test.cjs`), four for the shared Dashboard and Calendar schedule (`tests/schedule.test.cjs`), and one for Calendar tab reselection (`tests/clients.test.cjs`), bringing the total to 25.
+- Release preparation: Codex updated the app version to `0.4.0` in `app.json`, `package.json`, and `package-lock.json`, and added two iPhone 16 Pro simulator screenshots (`docs/screenshots/calendar-v0.4.png` and `docs/screenshots/daily-schedule-october-9-v0.4.png`), which the README now shows.
+
+### Files Added, Changed, or Removed
+- Added: `src/data/bookings.ts`, `src/logic/calendar.ts`, `src/logic/schedule.ts`, `src/components/CalendarMonth.tsx`, `src/screens/CalendarScreen.tsx`, `src/screens/DailyScheduleScreen.tsx`, `tests/calendar.test.cjs`, `tests/schedule.test.cjs`, `docs/screenshots/calendar-v0.4.png`, `docs/screenshots/daily-schedule-october-9-v0.4.png`, `docs/qa/v0.4-calendar-bookings-qa.md`
+- Changed: `App.tsx`, `app.json`, `package.json`, `package-lock.json`, `src/components/Screen.tsx`, `src/components/ScreenNavigation.tsx`, `src/logic/navigation.ts`, `src/screens/DashboardScreen.tsx`, `scripts/run-tests.cjs`, `tests/clients.test.cjs`, `tests/dogs.test.cjs`, `tests/README.md`, `AGENTS.md`, `README.md`, `CHANGELOG.md`, `docs/DEVELOPMENT_LOG.md`
+- Removed: `src/data/dashboard.ts`
+
+### Decisions
+| Decision | Detail |
+|---|---|
+| Bottom tab bar | The four tabs sit in one bar at the bottom of the screen. A navigation library is still not chosen; tabs are still switched with React state in `App.tsx`. |
+| One booking source | The Dashboard and the Calendar both read `src/data/bookings.ts` through `src/logic/schedule.ts`, so they always agree. |
+| Booking dates | Booking dates are stored as calendar dates (`YYYY-MM-DD`) and calculated in UTC so time zones and daylight saving cannot shift a booking to the wrong day. The end date is inclusive, so departure days appear on the schedule. |
+| Fixed demo dates | The calendar starts at October 2026 and the bookings use fixed dates, so the prototype and its QA can be repeated. |
+| Loading more months | Months load six at a time with a button rather than scrolling endlessly. |
+| Safe areas | `react-native-safe-area-context` replaces React Native's deprecated `SafeAreaView`. The version matches Expo SDK 57 and is included in Expo Go. |
+| Calendar tab reselection | Tapping **Calendar** again scrolls the monthly calendar to the top. When a Daily Schedule or profile is open, it returns to the calendar as before. |
+| Read-only bookings | Bookings cannot be added or edited, and there is no backend. |
+
+### Testing
+Full test steps, results, and evidence types are in [docs/qa/v0.4-calendar-bookings-qa.md](qa/v0.4-calendar-bookings-qa.md).
+
+| Test | Environment | Result |
+|---|---|---|
+| Automated test suite (`npm test`, 25 tests: 6 dogs, 8 clients and navigation, 7 calendar, 4 schedule) | Local, Node.js 24.14.1 | Passed: 25 of 25, re-run during documentation review |
+| Type check (`npx tsc --noEmit`) and `git diff --check` | Local | Passed, reported by Codex and re-run during documentation review |
+| Calendar with booked dates, today marker, and bottom tab bar | iPhone 16 Pro simulator | Passed: confirmed by screenshot |
+| October 9 Daily Schedule: Atlas and Hazel boarding, Willow and Cleo daycare, Otis training | iPhone 16 Pro simulator | Passed: confirmed by screenshot (count and first three) and by the project owner |
+| Daily Schedule heading and back link clear of the Dynamic Island | iPhone 16 Pro simulator | Passed: confirmed by screenshot |
+| Daily Schedule navigation, and arrival, continuing-stay, and departure examples | iPhone 16 Pro simulator | Passed: reported by the project owner |
+| Daily Schedule → Atlas profile → back | iPhone 16 Pro simulator | Passed: observed by the project owner |
+| Show next six months | iPhone 16 Pro simulator | Passed: observed by the project owner |
+| Calendar tab reselection scrolls to top (found in exploratory testing, fixed, retested) | iPhone 16 Pro simulator | Passed after fix: observed by the project owner |
+| Dashboard, Dogs, and Clients regression checks | iPhone 16 Pro simulator | Passed: observed by the project owner |
+
+Codex reported 24 automated tests; the suite run during documentation review contains 25, all passing.
+
+### Known Issues
+- **Dashboard depends on the device date:** The Dashboard now shows bookings for the device's current date. The fictional bookings only cover 8 October 2026 to 2 January 2027, so on most other dates the Dashboard shows no dogs scheduled.
+
+### Open Items
+- **Dashboard and calendar data (resolved in this session, pending commit):** Both now use `src/data/bookings.ts`.
+- **Deprecated SafeAreaView (resolved in this session, pending commit):** Replaced with `react-native-safe-area-context`.
+- **Screenshots (resolved in this session, pending commit):** Calendar and Daily Schedule screenshots added to the README. The older v0.1–v0.3 screenshots still show the earlier top navigation and are labeled as earlier prototypes.
+- **App version (resolved in this session, pending commit):** `app.json`, `package.json`, and `package-lock.json` now show `0.4.0`.
+- **Demo dates (open):** Decide whether the Dashboard should use a fixed demo date, or whether bookings should be extended, so the portfolio demo keeps showing data after October 2026.
+- **Untested scenarios (open):** VoiceOver, physical-device testing, the empty-date message, stays across months and years, tab switching from a Daily Schedule, and the Dashboard on a date without bookings. See the QA record.
+- **Visual refinements (open):** Carried over from v0.1.
+
+### Not Yet Decided
+- Navigation library
+- Backend architecture
+- Cloud database provider
+- Authentication service
+
+### Next Steps
+- Boarding-capacity indicators on the calendar.
+- Website booking integration.

@@ -6,6 +6,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-09 — Calendar & Bookings
+
+### Added
+- Calendar tab with months shown in a vertical scroll from October 2026, loading six more months at a time.
+- Highlighted dates with bookings, and a gold outline on today's date.
+- Daily Schedule screen for any tapped date, with arrival, continuing-stay, and departure details and a "No bookings scheduled" message for empty dates.
+- Links from a Daily Schedule booking to the dog's profile.
+- Nine fictional boarding, daycare, and training bookings (`src/data/bookings.ts`), including multi-day boarding stays across month and year boundaries.
+- Twelve automated tests for calendar dates and bookings, the shared Dashboard and Calendar schedule, and Calendar tab reselection (25 in total).
+- Calendar and Daily Schedule screenshots (`docs/screenshots/calendar-v0.4.png`, `docs/screenshots/daily-schedule-october-9-v0.4.png`) shown in the README App Preview.
+- `react-native-safe-area-context` ~5.7.0, the version for Expo SDK 57.
+- QA record for Calendar & Bookings (`docs/qa/v0.4-calendar-bookings-qa.md`).
+
+### Changed
+- Tab bar moved from the top of each screen to a shared bottom tab bar with four tabs: Dashboard, Dogs, Clients, and Calendar.
+- Dashboard now shows today's bookings from the same booking data as the Calendar, including arrivals, departures, and messages for days with nothing scheduled.
+- React Native's deprecated `SafeAreaView` replaced with `react-native-safe-area-context`.
+- App version updated to 0.4.0 in `app.json`, `package.json`, and `package-lock.json`.
+- `AGENTS.md`, `tests/README.md`, and the README updated for the Calendar feature.
+
+### Removed
+- `src/data/dashboard.ts`, the Dashboard's separate fixed schedule.
+
+### Fixed
+- Tapping the Calendar tab while already on the Calendar now scrolls back to the top.
+
 ## [0.3.0] - 2026-10-09 — Clients & Owners
 
 ### Added

@@ -5,7 +5,7 @@ const output = process.env.K9_TEST_OUTPUT;
 const { clientRecords: clients } = require(path.join(output, 'data/clientRecords.js'));
 const { dogRecords: dogs } = require(path.join(output, 'data/dogRecords.js'));
 const { searchClients, getDogOwner, getClientDogs } = require(path.join(output, 'logic/clients.js'));
-const { openProfile, backFromProfile } = require(path.join(output, 'logic/navigation.js'));
+const { openProfile, backFromProfile, shouldScrollCalendarToTop } = require(path.join(output, 'logic/navigation.js'));
 
 test('client name search handles partial names, case and surrounding whitespace', () => {
   assert.deepEqual(searchClients(clients, '  MORg ').map(client => client.id), ['client-001']);
@@ -74,4 +74,16 @@ test('profile navigation supports both directions and back without owner/dog loo
   assert.deepEqual(backFromProfile([client]), []);
   assert.deepEqual(backFromProfile([]), []);
   assert.deepEqual(fromDogs, [dog, client]);
+});
+
+test('Calendar reselection scrolls only the visible monthly calendar', () => {
+  assert.equal(shouldScrollCalendarToTop('Calendar', 'Calendar', false, false), true);
+  for (const active of ['Dashboard', 'Dogs', 'Clients']) {
+    assert.equal(shouldScrollCalendarToTop(active, 'Calendar', false, false), false);
+    assert.equal(shouldScrollCalendarToTop(active, active, false, false), false);
+  }
+  assert.equal(shouldScrollCalendarToTop('Calendar', 'Dogs', false, false), false);
+  assert.equal(shouldScrollCalendarToTop('Calendar', 'Calendar', true, false), false);
+  assert.equal(shouldScrollCalendarToTop('Calendar', 'Calendar', true, true), false);
+  assert.equal(shouldScrollCalendarToTop('Calendar', 'Calendar', false, true), false);
 });

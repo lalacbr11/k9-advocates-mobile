@@ -2,7 +2,12 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const path = require('node:path');
 const { dogRecords: dogs } = require(path.join(process.env.K9_TEST_OUTPUT, 'data/dogRecords.js'));
-const { demoMovements } = require(path.join(process.env.K9_TEST_OUTPUT, 'data/dashboard.js'));
+// Fixture for the generic movement resolver, not a production daily schedule.
+const demoMovements = [
+  { dogId: 'hazel', time: '11:30 AM', type: 'Arrival' },
+  { dogId: 'cleo', time: '4:30 PM', type: 'Departure' },
+  { dogId: 'willow', time: '5:00 PM', type: 'Departure' },
+];
 const { searchByName, filterByService, resolveMovements, previewDogs } = require(path.join(process.env.K9_TEST_OUTPUT, 'logic/dogs.js'));
 
 test('name search supports partial, case-insensitive and trimmed input', () => {

@@ -1,10 +1,10 @@
-import type { ReactNode } from 'react';
+import type { ReactNode, Ref } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { theme } from '../theme';
 
-export default function Screen({ children }: { children: ReactNode }) {
+export default function Screen({ children, scrollRef }: { children: ReactNode; scrollRef?: Ref<ScrollView> }) {
   return (
-    <ScrollView style={styles.screen} contentContainerStyle={styles.content}
+    <ScrollView ref={scrollRef} style={styles.screen} contentContainerStyle={styles.content}
       contentInsetAdjustmentBehavior="automatic" indicatorStyle="white"
       keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag"
       automaticallyAdjustKeyboardInsets>

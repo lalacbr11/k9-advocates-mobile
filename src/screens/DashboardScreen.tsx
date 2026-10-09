@@ -3,8 +3,10 @@ import type { ReactNode } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { dogs } from '../data/dogs';
 import type { Dog } from '../data/dogs';
-import { demoMovements } from '../data/dashboard';
-import { filterByService, resolveMovements, previewDogs } from '../logic/dogs';
+import { bookings } from '../data/bookings';
+import { localToday, formatCalendarDate } from '../logic/calendar';
+import { dailySchedule, scheduledDogs as selectScheduledDogs, scheduleMovements } from '../logic/schedule';
+import { filterByService, previewDogs } from '../logic/dogs';
 import { theme } from '../theme';
 
 const { colors, typography, spacing, borderRadius } = theme;
@@ -13,12 +15,13 @@ type Service = Dog['service'];
 
 export default function DashboardScreen({ navigation }: { navigation: ReactNode }) {
   const [filter, setFilter] = useState<Service | 'All'>('All');
-  const date = new Date().toLocaleDateString('en-US', {
-    weekday: 'long', month: 'short', day: 'numeric', year: 'numeric',
-  });
-  const scheduledDogs = filterByService(dogs, filter);
-  const movements = resolveMovements(dogs, demoMovements);
-  const preview = previewDogs(dogs, 3);
+  const today = localToday();
+  const date = formatCalendarDate(today, { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
+  const entries = dailySchedule(dogs, bookings, today);
+  const todayDogs = selectScheduledDogs(entries);
+  const scheduledDogs = filterByService(todayDogs, filter);
+  const movements = scheduleMovements(entries, today);
+  const preview = previewDogs(todayDogs, 3);
 
   return (
     <View style={styles.screen}>
@@ -35,7 +38,7 @@ export default function DashboardScreen({ navigation }: { navigation: ReactNode 
           <View style={styles.summaryGrid}>
             {services.map((service) => (
               <View key={service} style={styles.summaryCard}>
-                <Text style={styles.count}>{filterByService(dogs, service).length}</Text>
+                <Text style={styles.count}>{filterByService(todayDogs, service).length}</Text>
                 <Text style={styles.summaryLabel}>{service}</Text>
               </View>
             ))}
@@ -44,22 +47,24 @@ export default function DashboardScreen({ navigation }: { navigation: ReactNode 
         <View style={styles.section}>
           <Text accessibilityRole="header" style={styles.sectionTitle}>Arrivals & departures</Text>
           <View style={styles.panel}>
-            {movements.map((movement, index) => (
-              <View key={`${movement.dog.id}-${movement.type}`} style={[styles.movementRow, index > 0 && styles.divider]}>
+            {movements.slice(0, 3).map((movement, index) => (
+              <View key={movement.id} style={[styles.movementRow, index > 0 && styles.divider]}>
                 <View style={styles.rowContent}>
                   <Text style={styles.dogName}>{movement.dog.name}</Text>
-                  <Text style={styles.secondary}>{movement.type} · {movement.dog.service}</Text>
+                  <Text style={styles.secondary}>{movement.type} · {movement.service}</Text>
                 </View>
                 <Text style={styles.time}>{movement.time}</Text>
               </View>
             ))}
+            {!movements.length && <Text style={[styles.secondary, { paddingVertical: spacing.sm }]}>No arrivals or departures today</Text>}
           </View>
+          {movements.length > 3 && <Text style={styles.secondary}>{movements.length - 3} more movements · Times in full schedule below</Text>}
         </View>
         <View style={styles.section}>
-          <Text accessibilityRole="header" style={styles.sectionTitle}>Scheduled dogs · {dogs.length}</Text>
+          <Text accessibilityRole="header" style={styles.sectionTitle}>Scheduled dogs · {new Set(todayDogs.map(dog => dog.id)).size}</Text>
           <View style={styles.panel}>
             {preview.dogs.map((dog, index) => (
-              <View key={dog.id} style={[styles.previewRow, index > 0 && styles.divider]}>
+              <View key={`${dog.id}-${dog.service}`} style={[styles.previewRow, index > 0 && styles.divider]}>
                 <Text style={styles.dogName}>{dog.name}</Text>
                 <Text style={styles.secondary}>{dog.service}</Text>
               </View>
@@ -71,7 +76,7 @@ export default function DashboardScreen({ navigation }: { navigation: ReactNode 
         </View>
         <View style={styles.section}>
           <Text accessibilityRole="header" style={styles.sectionTitle}>Full dog schedule</Text>
-          <Text style={styles.secondary}>{dogs.length} dogs scheduled across your services</Text>
+          <Text style={styles.secondary}>{new Set(todayDogs.map(dog => dog.id)).size} dogs scheduled across your services</Text>
           <View style={styles.filters}>
             {(['All', ...services] as const).map((service) => (
               <Pressable key={service} accessibilityRole="button"
@@ -83,8 +88,9 @@ export default function DashboardScreen({ navigation }: { navigation: ReactNode 
             ))}
           </View>
           <View style={styles.panel}>
+            {!scheduledDogs.length && <Text style={[styles.secondary, { paddingVertical: spacing.sm }]}>No dogs scheduled{filter === 'All' ? ' today' : ` for ${filter.toLowerCase()}`}</Text>}
             {scheduledDogs.map((dog, index) => (
-              <View key={dog.id} style={[styles.dogRow, index > 0 && styles.divider]}>
+              <View key={`${dog.id}-${dog.service}`} style={[styles.dogRow, index > 0 && styles.divider]}>
                 <View style={styles.dogHeading}>
                   <Text style={styles.dogName}>{dog.name}</Text>
                   <Text style={styles.serviceLabel}>{dog.service}</Text>

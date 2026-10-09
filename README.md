@@ -2,7 +2,7 @@
 
 An internal iPhone app for **K9 Advocates LLC**, a dog training, boarding, and daycare business. The app is designed for the business's administrators and is being developed as a public software development and QA portfolio project.
 
-> **Project status: Early development (v0.3).** Project planning began on October 9, 2026. A prototype with a dashboard, a Dogs Directory, and a Clients Directory runs in the iOS Simulator using fictional sample data. It is not yet connected to a backend or real data, and records cannot be added or edited. All other features below are planned.
+> **Project status: Early development (v0.4).** Project planning began on October 9, 2026. A prototype with a dashboard, a Dogs Directory, a Clients Directory, and a booking calendar runs in the iOS Simulator using fictional sample data. It is not yet connected to a backend or real data, and records and bookings cannot be added or edited. All other features below are planned.
 
 ## App Preview
 
@@ -16,15 +16,23 @@ An internal iPhone app for **K9 Advocates LLC**, a dog training, boarding, and d
   <img src="docs/screenshots/client-profile-morgan-v0.3.png" alt="K9 Advocates Mobile v0.3 Morgan Ellis client profile with fictional contact details and linked dog Atlas" width="240">
 </p>
 
-<p align="center"><em>Dashboard v0.1, Dogs Directory v0.2, and Clients Directory and profile v0.3 on the iPhone 16 Pro simulator. All client and dog data shown is fictional sample data.</em></p>
+<p align="center"><em>Earlier prototypes: Dashboard v0.1, Dogs Directory v0.2, and Clients Directory and profile v0.3. These captures show the earlier top navigation.</em></p>
+
+<p align="center">
+  <img src="docs/screenshots/calendar-v0.4.png" alt="K9 Advocates Mobile v0.4 calendar showing October 2026 booked dates and bottom navigation" width="240">
+  <img src="docs/screenshots/daily-schedule-october-9-v0.4.png" alt="K9 Advocates Mobile v0.4 Daily Schedule for October 9, 2026 with fictional bookings and linked dog profiles" width="240">
+</p>
+
+<p align="center"><em>Calendar and Daily Schedule v0.4 on the iPhone 16 Pro simulator. All bookings, clients, and dogs shown are fictional sample data.</em></p>
 
 ## Current Prototype
 
-- **Dashboard (v0.1):** today's service counts, arrivals and departures, scheduled dogs, and service filters.
+- **Dashboard (v0.1, updated in v0.4):** today's service counts, arrivals and departures, scheduled dogs, and service filters, taken from the same fictional bookings as the Calendar for the device's current date.
 - **Dogs Directory (v0.2):** six fictional dogs, search by dog name, and read-only dog profiles with circular photos. Dogs without a photo show their initial.
 - **Clients Directory (v0.3):** six fictional clients, search by client name, and read-only client profiles with phone, email, and linked dogs.
 - **Dog and owner links (v0.3):** a dog's profile links to its owner, and a client's profile links to each of their dogs.
-- **Navigation:** switch between Dashboard, Dogs, and Clients.
+- **Calendar (v0.4):** months shown in a vertical scroll with booked dates highlighted. Tap a date to see its Daily Schedule, including arrivals, continuing boarding stays, and departures, and open a dog's profile from there. Bookings are fictional and read-only.
+- **Navigation:** a bottom tab bar to switch between Dashboard, Dogs, Clients, and Calendar.
 
 ## Technology
 
@@ -44,7 +52,7 @@ An internal iPhone app for **K9 Advocates LLC**, a dog training, boarding, and d
 | Administrator authentication | PLANNED |
 | Business dashboard | IN PROGRESS (v0.1 prototype with sample data) |
 | Client and dog profiles | IN PROGRESS (read-only dog profiles in v0.2 and client profiles in v0.3, with sample data) |
-| Booking calendar | PLANNED (next milestone; see [Roadmap](#roadmap)) |
+| Booking calendar | IN PROGRESS (v0.4 read-only calendar with sample bookings; capacity and website booking planned, see [Roadmap](#roadmap)) |
 | Boarding, daycare, and training management | PLANNED |
 | Payments and tips | PLANNED |
 | Website inquiry management | PLANNED |
@@ -55,13 +63,14 @@ An internal iPhone app for **K9 Advocates LLC**, a dog training, boarding, and d
 
 ## Roadmap
 
-**Next milestone: Calendar** (planned, not started)
+**Calendar** (v0.4 released; remaining items planned)
 
-- A dedicated Calendar tab.
-- A vertically scrolling monthly booking calendar.
-- Days with bookings highlighted.
-- Tap a date to see every dog scheduled that day, including overnight stays, arrivals, and departures.
-- Later: boarding-capacity indicators and website booking integration.
+- [x] A dedicated Calendar tab.
+- [x] A vertically scrolling monthly booking calendar.
+- [x] Days with bookings highlighted.
+- [x] Tap a date to see every dog scheduled that day, including overnight stays, arrivals, and departures.
+- [ ] Boarding-capacity indicators.
+- [ ] Website booking integration.
 
 The existing K9 Advocates desktop Hub (Python/Streamlit with SQLite) is a separate project. Any future connection to it would go through a secure backend.
 
@@ -84,7 +93,7 @@ npm run ios
 
 ## Screenshots
 
-See [App Preview](#app-preview) for genuine iPhone 16 Pro simulator captures of the dashboard, Dogs Directory, Clients Directory, and a client profile.
+See [App Preview](#app-preview) for genuine iPhone 16 Pro simulator captures of the dashboard, Dogs Directory, Clients Directory, a client profile, Calendar, and Daily Schedule.
 
 ## Development Approach
 

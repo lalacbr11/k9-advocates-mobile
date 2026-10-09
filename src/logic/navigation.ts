@@ -9,3 +9,9 @@ export function openProfile(history: readonly ProfileRoute[], next: ProfileRoute
 export function backFromProfile(history: readonly ProfileRoute[]): readonly ProfileRoute[] {
   return history.slice(0, -1);
 }
+
+// Reselect only scrolls the visible monthly calendar; nested screens retain
+// their existing tab behavior (return to the calendar at its saved position).
+export function shouldScrollCalendarToTop(active: string, next: string, hasSelectedDate: boolean, hasProfile: boolean): boolean {
+  return active === 'Calendar' && next === 'Calendar' && !hasSelectedDate && !hasProfile;
+}

@@ -13,33 +13,38 @@ K9 Advocates Mobile is an internal iPhone app for K9 Advocates LLC, built with E
 | Language | TypeScript (`strict: true`, extends `expo/tsconfig.base`) |
 | Package manager | npm (`package-lock.json`) |
 | Entry point | `index.ts` (registers `App` with `registerRootComponent`) |
-| Root component | `App.tsx` (active tab, search text, and profile history) |
+| Root component | `App.tsx` (active tab, search text, profile history, and selected calendar date) |
 | Screens | `src/screens/` |
 | Test runner | Node's built-in test runner (`npm test`) |
 | Local testing | iPhone 16 Pro simulator with Expo Go |
 
 ## Current architecture
 
-- `index.ts` registers the root component from `App.tsx`. `App.tsx` switches between the Dashboard, Dogs, and Clients tabs with React state. It keeps a profile history so dog and client profiles can link to each other with a working back link. Switching tabs clears the history.
+- `index.ts` registers the root component from `App.tsx`. `App.tsx` switches between the Dashboard, Dogs, Clients, and Calendar tabs with React state, using a bottom tab bar (`ScreenNavigation`) shared by every screen. It keeps a profile history so dog and client profiles can link to each other with a working back link, and the selected calendar date for the Daily Schedule. Switching tabs clears both. Tapping **Calendar** while already on the monthly calendar scrolls it to the top.
 - No navigation library is installed. Expo Router is **not** used, and there is no `src/app/` directory. A navigation library has not been chosen yet. Do not add one or restructure folders unless the developer asks for it.
 
 | Folder | Contents |
 |---|---|
-| `src/screens/` | `DashboardScreen`, `DogsScreen` and `ClientsScreen` (directories and search), `DogProfileScreen`, `ClientProfileScreen` |
-| `src/components/` | Shared UI: `ClientCard`, `DogAvatar`, `DogCard`, `Screen`, `ScreenNavigation` |
+| `src/screens/` | `DashboardScreen`, `DogsScreen` and `ClientsScreen` (directories and search), `DogProfileScreen`, `ClientProfileScreen`, `CalendarScreen`, `DailyScheduleScreen` |
+| `src/components/` | Shared UI: `CalendarMonth`, `ClientCard`, `DogAvatar`, `DogCard`, `Screen`, `ScreenNavigation` (bottom tab bar) |
 | `src/data/dogRecords.ts` | The shared fictional dog records used by every screen. Each dog refers to its owner by `clientId`. |
 | `src/data/clientRecords.ts` | The shared fictional client (owner) records with stable IDs, phone numbers, and emails |
-| `src/data/dashboard.ts` | Fictional arrivals and departures, which refer to dogs by ID |
+| `src/data/bookings.ts` | Fictional bookings with fixed dates, which refer to dogs by ID. The single source for both the Dashboard and the Calendar. |
 | `src/data/dogPhotos.ts` | Bundled dog photos (`assets/dogs/`) with source and license details |
 | `src/data/dogs.ts` | Combines the dog records with their owners and photos for the screens |
 | `src/logic/dogs.ts` | Pure search, filter, schedule, and preview functions |
 | `src/logic/clients.ts` | Pure client search and dog/owner lookup functions |
-| `src/logic/navigation.ts` | Pure profile history functions used by `App.tsx` |
+| `src/logic/navigation.ts` | Pure profile history and Calendar tab reselection functions used by `App.tsx` |
+| `src/logic/calendar.ts` | Pure date, month grid, and booking-per-date functions |
+| `src/logic/schedule.ts` | Pure daily schedule functions shared by the Dashboard and the Daily Schedule |
 | `src/theme.ts` | Brand colors, typography, spacing, and border radius |
 | `tests/` | Automated tests for the data and logic; see `tests/README.md` |
 
-- Keep `src/data/dogRecords.ts`, `src/data/clientRecords.ts`, `src/data/dashboard.ts`, and `src/logic/` free of React Native imports. `npm test` compiles them with plain TypeScript outside the app, so platform code there would break the tests. Photos and other platform code belong in `src/data/dogs.ts` or the screens.
+- Keep `src/data/dogRecords.ts`, `src/data/clientRecords.ts`, `src/data/bookings.ts`, and `src/logic/` free of React Native imports. `npm test` compiles them with plain TypeScript outside the app, so platform code there would break the tests. Photos and other platform code belong in `src/data/dogs.ts` or the screens.
 - Screens should get dog and client data from the shared records rather than defining their own copies. Store owner details only in the client records.
+- Get schedule data for any screen from `src/data/bookings.ts` through `src/logic/schedule.ts`; do not add a separate schedule for one screen.
+- Use `react-native-safe-area-context` for safe areas. React Native's built-in `SafeAreaView` is deprecated.
+- Store booking dates as `YYYY-MM-DD` calendar dates and use the helpers in `src/logic/calendar.ts` for date calculations, so time zones and daylight saving cannot shift a booking. Booking end dates are inclusive.
 - Fictional contact details must use the reserved 555-0100 to 555-0199 phone range and the `example.com` email domain.
 - If tests need a new data or logic module, add it to the file list in `scripts/run-tests.cjs`. Add new test files to the same script.
 - There is no backend, database, or authentication service yet. Do not add one without an explicit request.
