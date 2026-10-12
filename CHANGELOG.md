@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+- Dependency-free repository privacy checks (`npm run privacy`, with `privacy:check` as an alias, and `privacy:history`) for working files, staged content, and reachable local history.
+- Privacy regression tests and required pre-completion/pre-commit workflow; no enforced Git hook is installed.
+
+### Changed
+- Ignore rules protect local databases, sidecars, exports, captures, and secrets while permitting versioned SQL source only in `src/storage/migrations/`.
+- Privacy checks distinguish terminal file extensions from source names, use root-specific private directories, and require synthetic contacts across development data, seeds, and fixtures.
+- Repository privacy guidance documents migration trackability checks, redacted findings, and scanner limitations. No app features or dependencies changed.
+
 ## [0.4.0] - 2026-10-09 — Calendar & Bookings
 
 ### Added

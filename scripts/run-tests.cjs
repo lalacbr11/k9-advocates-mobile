@@ -12,7 +12,7 @@ try {
     '--ignoreConfig', '--outDir', output, '--rootDir', 'src', '--module', 'commonjs',
     '--target', 'ES2020', '--strict', '--skipLibCheck', '--noEmitOnError',
   ], { cwd: root, stdio: 'inherit' });
-  execFileSync(process.execPath, ['--test', 'tests/dogs.test.cjs', 'tests/clients.test.cjs', 'tests/calendar.test.cjs', 'tests/schedule.test.cjs'], {
+  execFileSync(process.execPath, ['--test', 'tests/dogs.test.cjs', 'tests/clients.test.cjs', 'tests/calendar.test.cjs', 'tests/schedule.test.cjs', 'tests/privacy.test.cjs'], {
     cwd: root, stdio: 'inherit', env: { ...process.env, K9_TEST_OUTPUT: output },
   });
 } catch (error) {

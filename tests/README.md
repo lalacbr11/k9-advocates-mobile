@@ -27,3 +27,10 @@ temporary output. A compilation or test failure exits nonzero.
 These tests cover data and pure logic. They do not verify native rendering,
 navigation gestures, keyboard behavior, photo loading, or accessibility. Manual
 simulator evidence is recorded in the QA records in `docs/qa/`.
+
+Repository privacy checks run with `npm run privacy` before completion and commits and
+`npm run privacy:history` for reachable Git history. See
+[repository privacy guidance](../docs/REPOSITORY_PRIVACY.md) for scope and limitations.
+`npm test` also runs `privacy.test.cjs`, covering detection, ignore rules, staged
+content, historical violations, redacted output, migration trackability, exact filename
+extensions, root directory exclusions, and strict synthetic contact checks.

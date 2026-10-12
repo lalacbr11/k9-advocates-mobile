@@ -16,6 +16,9 @@
   "scripts": {
     "start": "expo start",
     "test": "node scripts/run-tests.cjs",
+    "privacy": "node scripts/check-privacy.cjs",
+    "privacy:check": "node scripts/check-privacy.cjs",
+    "privacy:history": "node scripts/check-privacy.cjs --history",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web"

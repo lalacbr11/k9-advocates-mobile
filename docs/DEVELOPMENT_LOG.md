@@ -325,7 +325,7 @@ None recorded.
 ## 2026-10-09 — v0.4 Calendar & Bookings
 
 **Milestone:** v0.4 — Calendar & Bookings
-**Commit:** Not yet committed
+**Commit:** `6ccb46d`
 
 ### Work Completed
 - Moved the tab bar from the top of each screen to a bottom tab bar shared by every screen, and added a fourth tab, **Calendar**.
@@ -380,10 +380,10 @@ Codex reported 24 automated tests; the suite run during documentation review con
 - **Dashboard depends on the device date:** The Dashboard now shows bookings for the device's current date. The fictional bookings only cover 8 October 2026 to 2 January 2027, so on most other dates the Dashboard shows no dogs scheduled.
 
 ### Open Items
-- **Dashboard and calendar data (resolved in this session, pending commit):** Both now use `src/data/bookings.ts`.
-- **Deprecated SafeAreaView (resolved in this session, pending commit):** Replaced with `react-native-safe-area-context`.
-- **Screenshots (resolved in this session, pending commit):** Calendar and Daily Schedule screenshots added to the README. The older v0.1–v0.3 screenshots still show the earlier top navigation and are labeled as earlier prototypes.
-- **App version (resolved in this session, pending commit):** `app.json`, `package.json`, and `package-lock.json` now show `0.4.0`.
+- **Dashboard and calendar data (resolved in `6ccb46d`):** Both now use `src/data/bookings.ts`.
+- **Deprecated SafeAreaView (resolved in `6ccb46d`):** Replaced with `react-native-safe-area-context`.
+- **Screenshots (resolved in `6ccb46d`):** Calendar and Daily Schedule screenshots added to the README. The older v0.1–v0.3 screenshots still show the earlier top navigation and are labeled as earlier prototypes.
+- **App version (resolved in `6ccb46d`):** `app.json`, `package.json`, and `package-lock.json` now show `0.4.0`.
 - **Demo dates (open):** Decide whether the Dashboard should use a fixed demo date, or whether bookings should be extended, so the portfolio demo keeps showing data after October 2026.
 - **Untested scenarios (open):** VoiceOver, physical-device testing, the empty-date message, stays across months and years, tab switching from a Daily Schedule, and the Dashboard on a date without bookings. See the QA record.
 - **Visual refinements (open):** Carried over from v0.1.
@@ -397,3 +397,18 @@ Codex reported 24 automated tests; the suite run during documentation review con
 ### Next Steps
 - Boarding-capacity indicators on the calendar.
 - Website booking integration.
+
+
+---
+
+## 2026-10-12 — v0.5 Repository Privacy Protection (uncommitted)
+
+Repository security preparation only; Booking Management remains unimplemented.
+
+- Added dependency-free working/index and reachable-history scans, protected local database/export/capture paths, and privacy regression tests.
+- Addressed Andi's QA blocker by permitting SQL source only under `src/storage/migrations/`, explicitly reopening its parent directories, and detecting ignore configuration that hides migration source. SQL exports elsewhere remain prohibited.
+- Corrected terminal-extension matching and rooted private directory rules so legitimate nested source modules remain trackable.
+- Extended strict synthetic contact checks to development data, seed files, fixtures, and migration source. Added npm/JWT/Bearer/restricted-token detection and combined duplicate findings across scopes without printing matched values.
+- Required `npm run privacy`, `npm test`, and `npx tsc --noEmit` before task completion and commits. No Git hook is installed.
+- Preserved the existing v0.4 development-log content and QA edits; no Hub access, real-data import, dependency installation, repository commit, push, or history rewrite.
+- Verification: all 34 automated tests passed, TypeScript and whitespace checks passed, and working/index plus reachable-history privacy scans found no clear violations. Migration staging and blocked export/hidden-source behavior were exercised in temporary repositories. Owner review is still pending.

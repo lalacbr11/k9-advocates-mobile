@@ -105,6 +105,12 @@ AI tools support planning, coding, troubleshooting, and QA documentation. Laura 
 
 This repository is public. It does not contain, and must never contain, real customer information, production databases, credentials, API keys, or other secrets. All examples and test data are fictional.
 
+Before declaring development work complete or committing, run `npm run privacy`,
+`npm test`, and `npx tsc --noEmit`. Review warnings and resolve failures.
+`npm run privacy:history` also scans reachable local Git history. These are manual
+commands, not an enforced Git hook. See [repository privacy guidance](docs/REPOSITORY_PRIVACY.md)
+for protected exports, the permitted SQL migration directory, and scan limitations.
+
 ## Documentation
 
 - [CHANGELOG.md](CHANGELOG.md): notable changes and milestones

@@ -1,5 +1,5 @@
 # Logs
-logs
+/logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -76,7 +76,7 @@ web_modules/
 
 # Next.js build output
 .next
-out
+/out/
 
 # Nuxt.js build / generate output
 .nuxt
@@ -172,3 +172,65 @@ android/.gradle/
 
 # EAS local signing configuration (may contain passwords)
 credentials.json
+
+# Local databases, including SQLite transaction sidecars
+*.[dD][bB]
+*.[sS][qQ][lL][iI][tT][eE]
+*.[sS][qQ][lL][iI][tT][eE]3
+*-wal
+*-shm
+*-journal
+
+# Database backups and data exports (synthetic source fixtures stay tracked)
+*.bak
+*.backup
+*.dump
+*.[sS][qQ][lL]
+*.[cC][sS][vV]
+*.[tT][sS][vV]
+*.[xX][lL][sS]
+*.[xX][lL][sS][xX]
+*.[xX][lL][sS][mM]
+*.export.json
+*.export.jsonl
+*.ndjson
+*.jsonl
+/exports/
+/data-exports/
+/backups/
+/local-data/
+/private-data/
+
+# Local screenshots and recordings; reviewed synthetic docs/screenshots stay tracked
+/captures/
+/local-captures/
+/local-screenshots/
+/private-screenshots/
+/recordings/
+
+# Temporary debug output
+*.tmp
+*.temp
+*.debug
+*.trace
+*.log.[0-9]
+*.log.[0-9][0-9]
+*.log.[0-9][0-9][0-9]
+/debug-output/
+
+# Additional environment and credential material
+.envrc
+*.env
+*.pem
+*.keystore
+*.jks
+/secrets/
+/credentials/
+service-account*.json
+*-credentials.json
+
+# Versioned SQL source is permitted only here; reopen every parent explicitly.
+!/src/
+!/src/storage/
+!/src/storage/migrations/
+!/src/storage/migrations/**/*.[sS][qQ][lL]

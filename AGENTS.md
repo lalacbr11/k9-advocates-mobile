@@ -65,13 +65,15 @@ npm run ios                 # start the dev server and open the iOS Simulator
 npx expo start              # start the dev server
 npx expo install <package>  # add packages; resolves SDK-compatible versions
 npx tsc --noEmit            # type check
-npm test                    # run the automated data and logic tests
+npm test                    # run automated data, logic, and privacy tests
+npm run privacy             # scan working and staged files before completion/commits
 npx expo-doctor             # diagnose dependency and config issues
 ```
 
 - Always use `npx expo install` instead of `npm install <package>` to add Expo-compatible packages.
-- Run `npx tsc --noEmit` and `npm test` before declaring a task done.
-- The automated tests cover data and logic only. Check screen changes manually in the iOS Simulator.
+- Run `npx tsc --noEmit`, `npm test`, and `npm run privacy` before declaring development tasks complete and before commits. Resolve clear violations and review warnings; never print matched sensitive values.
+- `npm run privacy:history` additionally checks reachable local Git history. See `docs/REPOSITORY_PRIVACY.md` for scope and limitations. These scripts are not an enforced Git hook; no hook is installed.
+- The automated tests cover data, pure logic, and repository privacy checks. Check screen changes manually in the iOS Simulator.
 - No linter is configured. Don't run or require linting unless a lint configuration is added.
 
 ## Rules
@@ -90,7 +92,8 @@ npx expo-doctor             # diagnose dependency and config issues
 This repository is public and used as a professional portfolio.
 
 - Never commit real customer or dog data, credentials, API keys, tokens, `.env` files, production databases, or other secrets.
-- Use only fictional client and dog data in code, tests, and examples.
+- Use only fictional client and dog data in code, tests, documentation, screenshots, and examples. Contact data in `src/data/`, seed files, and fixtures must use `example.com` and reserved 555-0100 through 555-0199 numbers.
+- Versioned SQL source may be tracked only in `src/storage/migrations/`; database exports and dumps remain prohibited. The privacy checker verifies migrations are not silently hidden by ignore rules.
 - Use only approved K9 Advocates brand assets.
 
 ## Design direction
