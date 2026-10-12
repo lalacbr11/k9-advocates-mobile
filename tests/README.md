@@ -34,3 +34,31 @@ Repository privacy checks run with `npm run privacy` before completion and commi
 `npm test` also runs `privacy.test.cjs`, covering detection, ignore rules, staged
 content, historical violations, redacted output, migration trackability, exact filename
 extensions, root directory exclusions, and strict synthetic contact checks.
+
+`booking-domain.test.cjs` covers the new, currently unconnected v0.5 domain:
+six service codes, dashboard grouping, service-specific scheduling, synthetic dog
+IDs, statuses, actual movements, conflict warnings, half-open interval boundaries,
+and New York daylight-saving behavior. Times use `HH:mm`. Ambiguous fall-back
+times return `ambiguous_time` pending an approved disambiguation policy; nonexistent
+spring-forward times return `nonexistent_time`. The v0.4 fixture/schema and screens
+continue using their existing modules unchanged.
+
+The canonical booking boundary rejects unsupported top-level, schedule, and local
+date/time fields rather than copying legacy fields into new bookings. Use
+`evaluateBooking` for creation (duplicate IDs fail), `evaluateBookingEdit` with the
+original stable ID for edits, and `changeBookingStatus` for cancellation/restore.
+Edits and restores can exclude one matching existing record; multiple matches fail.
+Pass the full existing collection for reliable duplicate-ID and conflict detection.
+
+Conflict reports separate `warnings`, `invalidRecords` (indices/optional IDs and
+structured validation issues), and `candidateErrors`. Malformed existing records
+are reported and skipped; they cannot block other valid warnings. Evaluations pass
+known dog IDs to check relationships; standalone conflict checks need that optional
+context to detect unavailable dogs. Invalid records are not proof of availability.
+
+Cancellation requires only a stable ID and a Confirmed → Cancelled transition and
+preserves legacy data without asserting it is canonical. Restoration requires full
+canonical validation and conflict checking. Supported years are 2000–2100 inclusive;
+time and interval resolution return structured errors for unsupported years and
+DST gaps/folds. Early departure retains scheduled conflicts; Board & Train stays
+do not count as training appointments.
