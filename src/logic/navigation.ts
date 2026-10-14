@@ -1,4 +1,7 @@
-export type ProfileRoute = { kind: 'dog'; id: string } | { kind: 'client'; id: string };
+export type ProfileRoute =
+  | { kind: 'dog'; id: string }
+  | { kind: 'client'; id: string }
+  | { kind: 'booking'; id: string };
 
 // Revisit an existing profile instead of growing a dog/owner navigation loop.
 export function openProfile(history: readonly ProfileRoute[], next: ProfileRoute): readonly ProfileRoute[] {

@@ -2,7 +2,7 @@
 
 An internal iPhone app for **K9 Advocates LLC**, a dog training, boarding, and daycare business. The app is designed for the business's administrators and is being developed as a public software development and QA portfolio project.
 
-> **Project status: Early development (v0.4).** Project planning began on October 9, 2026. A prototype with a dashboard, a Dogs Directory, a Clients Directory, and a booking calendar runs in the iOS Simulator using fictional sample data. It is not yet connected to a backend or real data, and client/dog records cannot be added or edited. The v0.5 Add Booking demo supports new bookings in memory for the current app session only. All other features below are planned.
+> **Project status: Early development (v0.4).** Project planning began on October 9, 2026. A prototype with a dashboard, a Dogs Directory, a Clients Directory, and a booking calendar runs in the iOS Simulator using fictional sample data. It is not yet connected to a backend or real data, and client/dog records cannot be added or edited. The v0.5 demo supports adding bookings and viewing read-only Booking Details, in memory for the current app session only. All other features below are planned.
 
 ## App Preview
 
@@ -27,7 +27,7 @@ An internal iPhone app for **K9 Advocates LLC**, a dog training, boarding, and d
 
 ## Current Prototype
 
-- **Dashboard (v0.5 demo):** today's unique-dog service counts and one Today’s Dogs card per stable dog ID, with each booking’s service and arrival/departure times retained. Service filters keep all bookings for matching dogs visible. Uses the same fictional session bookings as Calendar and today in America/New_York.
+- **Dashboard (v0.5 demo):** today's unique-dog service counts and one Today’s Dogs card per stable dog ID, with each booking’s service and arrival/departure times retained. Service filters keep all bookings for matching dogs visible. Uses the same fictional session bookings as Calendar and today in America/New_York. Tap a dog's card to open its read-only Booking Details (or choose one when the dog has several bookings), or tap **Profile ›** for the Dog Profile.
 - **Dogs Directory (v0.2):** six fictional dogs, search by dog name, and read-only dog profiles with circular photos. Dogs without a photo show their initial.
 - **Clients Directory (v0.3):** six fictional clients, search by client name, and read-only client profiles with phone, email, and linked dogs.
 - **Dog and owner links (v0.3):** a dog's profile links to its owner, and a client's profile links to each of their dogs.
@@ -103,6 +103,10 @@ against the fictional session collection; there are no simulated conflict result
 Saved demo bookings update Dashboard, Calendar, and Daily Schedule together.
 Bookings and notes disappear when the app reloads or restarts. Nothing is saved to
 SQLite, a backend, or the desktop Hub. No new edit/cancel UI is included.
+
+To review Booking Details, tap a dog's card on Dashboard. A dog with one booking opens
+its details directly; a dog with several bookings opens a chooser. **Profile ›** opens
+the Dog Profile instead. Booking Details is read-only.
 
 For a repeatable warning example, choose Willow, Dog Daycare, October 9, 2026,
 9:17 AM–4:43 PM. Expand **View Existing Booking** and review the fictional overlap.

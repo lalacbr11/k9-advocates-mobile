@@ -129,3 +129,31 @@ test('dog sheet search matches fictional dog or owner without changing stable ID
   assert.equal(form.searchBookingDogs(dogs, '').length, dogRecords.length);
   assert.equal(form.searchBookingDogs(dogs, 'fictional-no-match').length, 0);
 });
+
+
+test('booking details preserve service-specific wall times and overnight date boundaries', () => {
+  const { bookingScheduleRows } = load('logic/bookingDetails.js');
+  const overnight = { kind: 'overnight', checkIn: { date: '2026-10-31', time: '18:17' }, checkOut: { date: '2026-11-02', time: '09:43' } };
+  const before = structuredClone(overnight);
+  assert.deepEqual(bookingScheduleRows(overnight), [
+    { label: 'Check-in', date: '2026-10-31', time: '18:17' },
+    { label: 'Check-out', date: '2026-11-02', time: '09:43' },
+  ]);
+  assert.deepEqual(overnight, before);
+  assert.deepEqual(bookingScheduleRows({ kind: 'daycare', date: '2026-10-14', dropOffTime: '00:07', pickupTime: '12:17' }), [
+    { label: 'Drop-off', date: '2026-10-14', time: '00:07' },
+    { label: 'Pick-up', date: '2026-10-14', time: '12:17' },
+  ]);
+  assert.deepEqual(bookingScheduleRows({ kind: 'training', date: '2026-10-14', startTime: '14:00', endTime: '15:00' }), [
+    { label: 'Session start', date: '2026-10-14', time: '14:00' },
+    { label: 'Session end', date: '2026-10-14', time: '15:00' },
+  ]);
+});
+
+test('whole-card selection opens a sole booking, but never chooses arbitrarily among multiple bookings', () => {
+  const { bookingCardAction } = load('logic/bookingDetails.js');
+  assert.deepEqual(bookingCardAction([]), { kind: 'none' });
+  assert.deepEqual(bookingCardAction(['demo-b']), { kind: 'open', id: 'demo-b' });
+  assert.deepEqual(bookingCardAction(['demo-b', 'demo-a']), { kind: 'choose' });
+  assert.deepEqual(bookingCardAction(['demo-a', 'demo-b']), { kind: 'choose' });
+});

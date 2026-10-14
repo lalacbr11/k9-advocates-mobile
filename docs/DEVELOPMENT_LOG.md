@@ -446,11 +446,11 @@ The in-memory save flow, domain rules, and fictional source fixtures are unchang
 Regression coverage includes same-name dogs and multiple overlapping bookings.
 
 
-### 2026-10-13 — End-of-day status (v0.5 in progress, uncommitted)
+### 2026-10-13 — End-of-day status (v0.5 in progress)
 
-**Commit:** Not yet committed. Committed so far in v0.5: `ab37822` (repository
-privacy protection) and `2f9faa0` (booking domain model and validation). The Add
-Booking UI, UI Revision 1, and today's navigation change are uncommitted.
+**Commit:** `312fa97` (Add Booking UI, UI Revision 1, and Dashboard → Dog Profile
+navigation). Earlier v0.5 commits: `ab37822` (repository privacy protection) and
+`2f9faa0` (booking domain model and validation).
 
 #### Work completed today
 - Add Booking UI and UI Revision 1 are implemented as a fictional, session-only demo.
@@ -475,7 +475,7 @@ Full details and evidence are in the end-of-day update in
 
 | ID | Severity | Type | Summary |
 |---|---|---|---|
-| EOD-01 | Blocking | Confirmed defect | `git diff --check` fails on trailing whitespace (three lines). Must be fixed before committing. |
+| EOD-01 | Blocking (resolved in `312fa97`) | Confirmed defect | `git diff --check` failed on trailing whitespace (three lines). Fixed before commit. |
 | EOD-02 | Important | Confirmed limitation | Dog Profile shows a static fixture service using old labels, not the current booking's service. |
 | EOD-03 | Important | Confirmed limitation | Calendar cannot go back before October 2026; requirement 17 not yet met. |
 | EOD-04 | Important | Unverified, future concern | The schedule adapter drops invalid bookings without reporting them; not reachable today, but a risk once bookings persist. |
@@ -494,3 +494,56 @@ Full details and evidence are in the end-of-day update in
 - Decide with Joanne whether EOD-02 and EOD-03 are fixed in v0.5 or deferred.
 - Address EOD-04 as part of the approved SQLite work, so invalid stored bookings show
   the "Some bookings need review" notice instead of disappearing.
+
+---
+
+## 2026-10-14 — v0.5 Booking Details and Navigation
+
+**Milestone:** v0.5 — Booking Details and Navigation (in progress)
+**Commit:** Not yet committed
+
+### Work Completed
+- Added booking routes to the existing profile history in `App.tsx` and `src/logic/navigation.ts`. No navigation library was added.
+- Connected Dashboard booking cards to a new Booking Details screen. For a dog with one booking, the whole card opens its details; the separate **Profile ›** action still opens the Dog Profile.
+- Added a booking chooser sheet for dogs with more than one booking. Each entry shows the service, dates and times, and booking ID.
+- Added `src/screens/BookingDetailsScreen.tsx`, designed to match the Dog Profile: photo, name and breed, then owner, service, status, schedule rows, and booking ID, with a back link to the previous screen.
+- Added `src/logic/bookingDetails.ts` for schedule labels (Check-in/Check-out, Drop-off/Pick-up, Session start/Session end) and the single-versus-multiple card action.
+- Removed the visible New York time-zone explanation from Booking Details and from the New Booking form's Schedule section. Booking dates and times are still validated and interpreted in America/New_York.
+- Booking storage remains session-only. No SQLite, backend, or new dependencies.
+
+### Files Added or Changed
+- Added: `src/screens/BookingDetailsScreen.tsx`, `src/logic/bookingDetails.ts`, `docs/qa/v0.5-booking-details-qa.md`
+- Changed: `App.tsx`, `src/components/ScheduledDogCard.tsx`, `src/logic/navigation.ts`, `src/screens/DashboardScreen.tsx`, `src/screens/NewBookingScreen.tsx`, `scripts/run-tests.cjs`, `tests/booking-form.test.cjs`, `tests/clients.test.cjs`, `README.md`, `CHANGELOG.md`, `docs/DEVELOPMENT_LOG.md`, `docs/qa/v0.5-ui-revision-1-qa.md`
+
+### Decisions
+| Decision | Detail |
+|---|---|
+| Whole-card tap target | A single-booking card opens its booking from anywhere on the card. **Profile ›** is a separate control, not nested inside the card's tap target. |
+| Multiple bookings | The card never picks one booking arbitrarily; it opens a chooser. |
+| Time-zone wording | The New York explanation is hidden from users; time-zone handling in the logic is unchanged. |
+
+### Testing
+Full results are in [docs/qa/v0.5-booking-details-qa.md](qa/v0.5-booking-details-qa.md).
+
+| Test | Result |
+|---|---|
+| `npm test` | Passed: 72 of 72, re-run after the final changes, including the New Booking text removal (Dex reported 72 before them) |
+| `npx tsc --noEmit`, `npm run privacy`, `git diff --check` | Passed; 0 privacy violations |
+| Hazel's booking opens from the Dashboard | Passed: observed by the project owner |
+| The whole Hazel card is clickable | Passed: observed by the project owner |
+| Booking Details design | Approved by the project owner; recheck after the time-zone text removal passed |
+| Multiple-booking chooser for Hazel; second booking `demo-session-2` opens with correct times | Passed: observed by the project owner |
+| **Profile ›** opens the Dog Profile; Back returns to the Dashboard with Hazel's bookings shown | Passed: observed by the project owner |
+| Dashboard **Boarding**, **Daycare**, and **All** filters | Passed: observed by the project owner |
+| Overlap warning, then save after acknowledgement | Passed: observed by the project owner |
+| New Booking time-zone text removed | Passed: visually confirmed by the project owner |
+
+### Outstanding QA
+- Boarding (overnight) and training Booking Details. Daycare Booking Details passed (BD-07): Hazel's daycare booking `demo-session-2` displayed the correct drop-off time of 11:00 AM and pick-up time of 7:00 PM.
+- Dashboard scroll position kept after returning from Booking Details
+- Training filter, and filter kept after Back
+- VoiceOver, larger text sizes, and a physical iPhone
+
+### Known Issues
+- **EOD-02 (existing):** Hazel's Dog Profile shows Boarding while her current session booking is Daycare. The Dog Profile reads a fixed service from `dogRecords.ts`; Booking Details shows the correct booking service.
+- EOD-03 to EOD-06 from 13 October remain open.

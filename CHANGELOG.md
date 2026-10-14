@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
+- Booking Details screen matching the Dog Profile design: photo, name, breed, owner, service, status, schedule dates and times, and booking ID.
+- Dashboard booking cards open Booking Details; a dog with several bookings opens a booking chooser. The separate Profile action still opens the Dog Profile.
+- Dashboard → Dog Profile navigation with a back link to the Dashboard that keeps its filter and scroll position.
 - Dark Add Booking styling and shared compact dog-grouped Dashboard/Daily Schedule cards, preserving individual bookings and distinct dog/booking counts.
 - v0.5 Add Booking UI with shared Dashboard/Calendar entry, fictional dog search, six domain services, native date/time selection, collapsible notes, validation, and inline conflict acknowledgement.
 - Explicit in-memory demo saving with shared schedule updates and a session-only confirmation; no SQLite or backend persistence.
@@ -15,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Privacy regression tests and required pre-completion/pre-commit workflow; no enforced Git hook is installed.
 
 ### Changed
+- The New Booking form no longer shows the New York time-zone explanation; dates and times are still interpreted in America/New_York.
 - Ignore rules protect local databases, sidecars, exports, captures, and secrets while permitting versioned SQL source only in `src/storage/migrations/`.
 - Privacy checks distinguish terminal file extensions from source names, use root-specific private directories, and require synthetic contacts across development data, seeds, and fixtures.
 - Repository privacy guidance documents migration trackability checks, redacted findings, and scanner limitations. No app features or dependencies changed.

@@ -87,3 +87,16 @@ test('Calendar reselection scrolls only the visible monthly calendar', () => {
   assert.equal(shouldScrollCalendarToTop('Calendar', 'Calendar', true, true), false);
   assert.equal(shouldScrollCalendarToTop('Calendar', 'Calendar', false, true), false);
 });
+
+
+test('booking routes preserve the selected booking ID and unwind independently of dog profiles', () => {
+  const first = { kind: 'booking', id: 'demo-booking-a' };
+  const second = { kind: 'booking', id: 'demo-booking-b' };
+  const dog = { kind: 'dog', id: 'atlas' };
+  const history = openProfile([], second);
+  assert.deepEqual(history, [second]);
+  assert.deepEqual(backFromProfile(history), []);
+  assert.deepEqual(backFromProfile(openProfile(history, dog)), [second]);
+  assert.deepEqual(openProfile(openProfile([first], second), first), [first]);
+  assert.equal(shouldScrollCalendarToTop('Calendar', 'Calendar', false, history.length > 0), false);
+});

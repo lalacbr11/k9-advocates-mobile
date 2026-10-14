@@ -136,7 +136,6 @@ export default function NewBookingScreen({ calendarDate, onClose, onSaved }: {
         </View>
         <View style={[styles.section, styles.scheduleSection]}>
           <Text accessibilityRole="header" style={styles.sectionTitle}>Schedule</Text>
-          <Text style={styles.caption}>All dates and times are in New York (Eastern Time).</Text>
           {!kind ? <Text style={styles.caption}>Select a service to set its schedule.</Text> : <>
             <View style={styles.group}><Text style={styles.groupLabel}>{startLabel}</Text>
               <View style={styles.fieldRow}>{dateButton('startDate', startLabel)}{timeButton('startTime', startLabel)}</View></View>
