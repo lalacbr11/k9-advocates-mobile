@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
+- Dark Add Booking styling and shared compact dog-grouped Dashboard/Daily Schedule cards, preserving individual bookings and distinct dog/booking counts.
+- v0.5 Add Booking UI with shared Dashboard/Calendar entry, fictional dog search, six domain services, native date/time selection, collapsible notes, validation, and inline conflict acknowledgement.
+- Explicit in-memory demo saving with shared schedule updates and a session-only confirmation; no SQLite or backend persistence.
+- Booking-form regression tests and New York today selection for Dashboard/Calendar.
 - Dependency-free repository privacy checks (`npm run privacy`, with `privacy:check` as an alias, and `privacy:history`) for working files, staged content, and reachable local history.
 - Privacy regression tests and required pre-completion/pre-commit workflow; no enforced Git hook is installed.
 

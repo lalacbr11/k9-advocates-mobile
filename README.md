@@ -2,7 +2,7 @@
 
 An internal iPhone app for **K9 Advocates LLC**, a dog training, boarding, and daycare business. The app is designed for the business's administrators and is being developed as a public software development and QA portfolio project.
 
-> **Project status: Early development (v0.4).** Project planning began on October 9, 2026. A prototype with a dashboard, a Dogs Directory, a Clients Directory, and a booking calendar runs in the iOS Simulator using fictional sample data. It is not yet connected to a backend or real data, and records and bookings cannot be added or edited. All other features below are planned.
+> **Project status: Early development (v0.4).** Project planning began on October 9, 2026. A prototype with a dashboard, a Dogs Directory, a Clients Directory, and a booking calendar runs in the iOS Simulator using fictional sample data. It is not yet connected to a backend or real data, and client/dog records cannot be added or edited. The v0.5 Add Booking demo supports new bookings in memory for the current app session only. All other features below are planned.
 
 ## App Preview
 
@@ -27,11 +27,11 @@ An internal iPhone app for **K9 Advocates LLC**, a dog training, boarding, and d
 
 ## Current Prototype
 
-- **Dashboard (v0.1, updated in v0.4):** today's service counts, arrivals and departures, scheduled dogs, and service filters, taken from the same fictional bookings as the Calendar for the device's current date.
+- **Dashboard (v0.5 demo):** today's unique-dog service counts and one Today’s Dogs card per stable dog ID, with each booking’s service and arrival/departure times retained. Service filters keep all bookings for matching dogs visible. Uses the same fictional session bookings as Calendar and today in America/New_York.
 - **Dogs Directory (v0.2):** six fictional dogs, search by dog name, and read-only dog profiles with circular photos. Dogs without a photo show their initial.
 - **Clients Directory (v0.3):** six fictional clients, search by client name, and read-only client profiles with phone, email, and linked dogs.
 - **Dog and owner links (v0.3):** a dog's profile links to its owner, and a client's profile links to each of their dogs.
-- **Calendar (v0.4):** months shown in a vertical scroll with booked dates highlighted. Tap a date to see its Daily Schedule, including arrivals, continuing boarding stays, and departures, and open a dog's profile from there. Bookings are fictional and read-only.
+- **Calendar (v0.4):** months shown in a vertical scroll with booked dates highlighted. Tap a date to see its Daily Schedule grouped by dog, with separate booking details including arrivals, continuing boarding stays, and departures, and open a dog's profile from there. Existing bookings are fictional and read-only; new demo bookings can be added for the current session.
 - **Navigation:** a bottom tab bar to switch between Dashboard, Dogs, Clients, and Calendar.
 
 ## Technology
@@ -90,6 +90,28 @@ npm run ios
 ```
 
 `npm run ios` starts the Expo development server and opens the app in the iOS Simulator using Expo Go.
+
+## Inspect the v0.5 Add Booking demo
+
+Run `npm run ios`, then tap **Add Booking** on Dashboard or Calendar. To preselect a
+specific date, tap that date in Calendar and use **Add Booking** on its Daily Schedule.
+Dashboard defaults to today in New York.
+
+Choose a fictional dog and service, set native dates/times, optionally add notes,
+and tap **Save Booking**. Overlaps require acknowledgement in the form. Checks run
+against the fictional session collection; there are no simulated conflict results.
+Saved demo bookings update Dashboard, Calendar, and Daily Schedule together.
+Bookings and notes disappear when the app reloads or restarts. Nothing is saved to
+SQLite, a backend, or the desktop Hub. No new edit/cancel UI is included.
+
+For a repeatable warning example, choose Willow, Dog Daycare, October 9, 2026,
+9:17 AM–4:43 PM. Expand **View Existing Booking** and review the fictional overlap.
+Also try saving an empty form, collapsing/reopening notes, and backing out after
+changing a selection. Native visual/keyboard review is still required before approval.
+
+The only new dependency is the SDK-compatible native date/time picker included in
+Expo Go. Time values retain arbitrary minutes and are validated in New York; DST
+gaps and repeated fall-back times are rejected rather than silently converted.
 
 ## Screenshots
 

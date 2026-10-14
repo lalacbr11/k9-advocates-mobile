@@ -29,7 +29,7 @@ K9 Advocates Mobile is an internal iPhone app for K9 Advocates LLC, built with E
 | `src/components/` | Shared UI: `CalendarMonth`, `ClientCard`, `DogAvatar`, `DogCard`, `Screen`, `ScreenNavigation` (bottom tab bar) |
 | `src/data/dogRecords.ts` | The shared fictional dog records used by every screen. Each dog refers to its owner by `clientId`. |
 | `src/data/clientRecords.ts` | The shared fictional client (owner) records with stable IDs, phone numbers, and emails |
-| `src/data/bookings.ts` | Fictional bookings with fixed dates, which refer to dogs by ID. The single source for both the Dashboard and the Calendar. |
+| `src/data/bookings.ts` | Fictional bookings with fixed dates, which refer to dogs by ID. Unchanged v0.4 fixtures used to initialize the fictional in-memory v0.5 session. |
 | `src/data/dogPhotos.ts` | Bundled dog photos (`assets/dogs/`) with source and license details |
 | `src/data/dogs.ts` | Combines the dog records with their owners and photos for the screens |
 | `src/logic/dogs.ts` | Pure search, filter, schedule, and preview functions |
@@ -42,9 +42,10 @@ K9 Advocates Mobile is an internal iPhone app for K9 Advocates LLC, built with E
 
 - Keep `src/data/dogRecords.ts`, `src/data/clientRecords.ts`, `src/data/bookings.ts`, and `src/logic/` free of React Native imports. `npm test` compiles them with plain TypeScript outside the app, so platform code there would break the tests. Photos and other platform code belong in `src/data/dogs.ts` or the screens.
 - Screens should get dog and client data from the shared records rather than defining their own copies. Store owner details only in the client records.
-- Get schedule data for any screen from `src/data/bookings.ts` through `src/logic/schedule.ts`; do not add a separate schedule for one screen.
+- Dashboard, Calendar, and Daily Schedule read one in-memory `src/context/BookingSession.tsx` snapshot. Its temporary presentation adapter feeds the existing `src/logic/schedule.ts` selectors; do not add screen-specific booking collections. The unchanged v0.4 fixtures initialize the session. Bookings/notes reset on reload; no persistence is implemented.
 - Use `react-native-safe-area-context` for safe areas. React Native's built-in `SafeAreaView` is deprecated.
-- Store booking dates as `YYYY-MM-DD` calendar dates and use the helpers in `src/logic/calendar.ts` for date calculations, so time zones and daylight saving cannot shift a booking. Booking end dates are inclusive.
+- Canonical bookings use `src/domain/booking.ts` and `src/domain/services.ts`, with full validation/conflicts in `src/logic/bookingValidation.ts`. Dates are `YYYY-MM-DD`, times `HH:mm`, interpreted in America/New_York. Reject ambiguous/nonexistent times. Calendar display includes checkout day; conflict intervals are half-open. Dashboard/Calendar today comes from the session's New York helper, refreshed on resume and date rollover. Native picker UTC carriers preserve wall-clock strings only; they are not booking instants.
+- `src/screens/NewBookingScreen.tsx` creates fictional demo bookings only. Notes remain in the session envelope outside the strict canonical model. Session IDs are counter-based demo IDs; durable UUIDs and SQLite remain future work. Use `@react-native-community/datetimepicker` for the native picker; no navigation library was added.
 - Fictional contact details must use the reserved 555-0100 to 555-0199 phone range and the `example.com` email domain.
 - If tests need a new data or logic module, add it to the file list in `scripts/run-tests.cjs`. Add new test files to the same script.
 - There is no backend, database, or authentication service yet. Do not add one without an explicit request.

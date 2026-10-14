@@ -8,11 +8,11 @@ const output = mkdtempSync(path.join(tmpdir(), 'k9-tests-'));
 try {
   // Compile only platform-independent production modules with the installed TypeScript.
   execFileSync(process.execPath, [require.resolve('typescript/bin/tsc'),
-    'src/domain/booking.ts', 'src/domain/services.ts', 'src/logic/bookingValidation.ts', 'src/logic/bookingChecks.ts', 'src/logic/bookingTime.ts', 'src/logic/bookingConflicts.ts', 'src/data/bookings.ts', 'src/logic/calendar.ts', 'src/logic/schedule.ts', 'src/data/clientRecords.ts', 'src/logic/clients.ts', 'src/logic/navigation.ts', 'src/data/dogRecords.ts', 'src/logic/dogs.ts',
+    'src/domain/booking.ts', 'src/domain/services.ts', 'src/logic/bookingForm.ts', 'src/logic/bookingValidation.ts', 'src/logic/bookingChecks.ts', 'src/logic/bookingTime.ts', 'src/logic/bookingConflicts.ts', 'src/data/bookings.ts', 'src/logic/calendar.ts', 'src/logic/schedule.ts', 'src/data/clientRecords.ts', 'src/logic/clients.ts', 'src/logic/navigation.ts', 'src/data/dogRecords.ts', 'src/logic/dogs.ts',
     '--ignoreConfig', '--outDir', output, '--rootDir', 'src', '--module', 'commonjs',
     '--target', 'ES2020', '--strict', '--skipLibCheck', '--noEmitOnError',
   ], { cwd: root, stdio: 'inherit' });
-  execFileSync(process.execPath, ['--test', 'tests/dogs.test.cjs', 'tests/clients.test.cjs', 'tests/calendar.test.cjs', 'tests/schedule.test.cjs', 'tests/privacy.test.cjs', 'tests/booking-domain.test.cjs'], {
+  execFileSync(process.execPath, ['--test', 'tests/dogs.test.cjs', 'tests/clients.test.cjs', 'tests/calendar.test.cjs', 'tests/schedule.test.cjs', 'tests/privacy.test.cjs', 'tests/booking-domain.test.cjs', 'tests/booking-form.test.cjs'], {
     cwd: root, stdio: 'inherit', env: { ...process.env, K9_TEST_OUTPUT: output },
   });
 } catch (error) {

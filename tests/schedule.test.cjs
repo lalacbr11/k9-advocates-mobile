@@ -4,7 +4,7 @@ const path = require('node:path');
 const output = process.env.K9_TEST_OUTPUT;
 const { bookings } = require(path.join(output, 'data/bookings.js'));
 const { dogRecords: dogs } = require(path.join(output, 'data/dogRecords.js'));
-const { dailySchedule, scheduledDogs, scheduleMovements } = require(path.join(output, 'logic/schedule.js'));
+const { dailySchedule, scheduledDogs, scheduleMovements, groupScheduleByDog, filterDogScheduleGroups } = require(path.join(output, 'logic/schedule.js'));
 const { filterByService, previewDogs } = require(path.join(output, 'logic/dogs.js'));
 
 test('Dashboard and Calendar select the same five dogs on October 9; Finn is October 10', () => {
@@ -43,4 +43,30 @@ test('empty days, unknown dogs, and lookups leave source records intact', () => 
   assert.throws(() => dailySchedule([], bookings, '2026-10-09'), /Unknown dog/);
   dailySchedule(dogs, bookings, '2026-11-01');
   assert.deepEqual({ dogs, bookings }, before);
+});
+
+test('stable dog IDs group multiple bookings without merging schedules or same-name dogs', () => {
+  const sameNameDogs = [{ id: 'demo-a', name: 'Example' }, { id: 'demo-b', name: 'Example' }];
+  const sample = { ...bookings[2], dogId: 'demo-a' };
+  const records = [sample, { ...sample, id: 'second', service: 'Training', arrivalTime: '10:00 AM' }, { ...sample, id: 'third', dogId: 'demo-b' }];
+  const before = structuredClone(records);
+  const entries = dailySchedule(sameNameDogs, records, '2026-10-09');
+  const groups = groupScheduleByDog(entries);
+  assert.equal(groups.length, 2);
+  assert.deepEqual(groups[0].bookings.map(entry => entry.booking.id), [sample.id, 'second']);
+  assert.equal(groups[0].bookings[0], entries[0]);
+  assert.equal(groups[0].bookings[1], entries[1]);
+  assert.deepEqual(groups[0].bookings[1].details, ['Arrival · 10:00 AM', `Departure · ${sample.departureTime}`]);
+  assert.deepEqual(records, before);
+  assert.equal(filterDogScheduleGroups(groups, 'Training').length, 1);
+  assert.equal(filterDogScheduleGroups(groups, 'Training')[0].bookings.length, 2);
+  assert.equal(filterDogScheduleGroups(groups, 'Daycare').length, 2);
+});
+test('same-service overlapping bookings count one dog and retain each booking', () => {
+  const sample = bookings[2];
+  const groups = groupScheduleByDog(dailySchedule(dogs, [sample, { ...sample, id: 'overlapping-demo' }], sample.startDate));
+  assert.equal(groups.length, 1);
+  assert.equal(groups[0].bookings.length, 2);
+  assert.equal(filterDogScheduleGroups(groups, 'Daycare').length, 1);
+  assert.deepEqual(groupScheduleByDog([]), []);
 });

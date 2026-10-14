@@ -22,7 +22,7 @@ temporary output. A compilation or test failure exits nonzero.
 | `dogs.test.cjs` | Dog search, service filters, dog records, the ID-based movement resolver, scheduled-dogs preview |
 | `clients.test.cjs` | Client search, client records, dog/owner relationships, profile navigation history, Calendar tab reselection |
 | `calendar.test.cjs` | Calendar dates, month grids, booking date ranges, arrival/continuing-stay/departure details, booking records |
-| `schedule.test.cjs` | Daily schedule shared by the Dashboard and Calendar: scheduled dogs, arrivals and departures, empty days |
+| `schedule.test.cjs` | Daily schedule shared by the Dashboard and Calendar: scheduled dogs, arrivals and departures, empty days, stable-ID grouping, multiple/overlapping bookings, same-name dogs, filter counts |
 
 These tests cover data and pure logic. They do not verify native rendering,
 navigation gestures, keyboard behavior, photo loading, or accessibility. Manual
@@ -35,13 +35,13 @@ Repository privacy checks run with `npm run privacy` before completion and commi
 content, historical violations, redacted output, migration trackability, exact filename
 extensions, root directory exclusions, and strict synthetic contact checks.
 
-`booking-domain.test.cjs` covers the new, currently unconnected v0.5 domain:
+`booking-domain.test.cjs` covers the v0.5 domain:
 six service codes, dashboard grouping, service-specific scheduling, synthetic dog
 IDs, statuses, actual movements, conflict warnings, half-open interval boundaries,
 and New York daylight-saving behavior. Times use `HH:mm`. Ambiguous fall-back
 times return `ambiguous_time` pending an approved disambiguation policy; nonexistent
-spring-forward times return `nonexistent_time`. The v0.4 fixture/schema and screens
-continue using their existing modules unchanged.
+spring-forward times return `nonexistent_time`. The v0.4 fixtures and existing pure schedule selectors remain unchanged.
+The v0.5 UI uses a temporary session adapter for those selectors.
 
 The canonical booking boundary rejects unsupported top-level, schedule, and local
 date/time fields rather than copying legacy fields into new bookings. Use
@@ -62,3 +62,11 @@ canonical validation and conflict checking. Supported years are 2000–2100 incl
 time and interval resolution return structured errors for unsupported years and
 DST gaps/folds. Early departure retains scheduled conflicts; Board & Train stays
 do not count as training appointments.
+
+`booking-form.test.cjs` covers New York/default Calendar dates, six service
+schedules, required fields, arbitrary-minute picker carriers, DST rejection,
+conflict acknowledgement and invalidation, incomplete checks, duplicate IDs,
+separate notes, dirty forms, fixture conversion, shared schedule projection, and
+dog/owner search. It does not replace simulator verification of the bottom sheet,
+wheel gestures, keyboard avoidance, safe areas, discard prompt, or return navigation.
+The test runner compiles `bookingForm.ts` without React Native imports.

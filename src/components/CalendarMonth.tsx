@@ -1,11 +1,11 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { bookings } from '../data/bookings';
-import { bookingsForDate, formatCalendarDate, localToday, monthGrid } from '../logic/calendar';
+import { useBookingSession } from '../context/BookingSession';
+import { bookingsForDate, formatCalendarDate, monthGrid } from '../logic/calendar';
 import { theme } from '../theme';
 
 const { colors, typography, spacing, borderRadius } = theme;
 export default function CalendarMonth({ month, onSelectDate }: { month: string; onSelectDate: (date: string) => void }) {
-  const today = localToday();
+  const { scheduleBookings: bookings, today } = useBookingSession();
   return (
     <View style={styles.month}>
       <Text accessibilityRole="header" style={styles.title}>{formatCalendarDate(month, { month: 'long', year: 'numeric' })}</Text>

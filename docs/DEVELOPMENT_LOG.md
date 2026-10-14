@@ -401,7 +401,9 @@ Codex reported 24 automated tests; the suite run during documentation review con
 
 ---
 
-## 2026-10-12 — v0.5 Repository Privacy Protection (uncommitted)
+## 2026-10-12 — v0.5 Repository Privacy Protection
+
+**Commit:** `ab37822`
 
 Repository security preparation only; Booking Management remains unimplemented.
 
@@ -412,3 +414,83 @@ Repository security preparation only; Booking Management remains unimplemented.
 - Required `npm run privacy`, `npm test`, and `npx tsc --noEmit` before task completion and commits. No Git hook is installed.
 - Preserved the existing v0.4 development-log content and QA edits; no Hub access, real-data import, dependency installation, repository commit, push, or history rewrite.
 - Verification: all 34 automated tests passed, TypeScript and whitespace checks passed, and working/index plus reachable-history privacy scans found no clear violations. Migration staging and blocked export/hidden-source behavior were exercised in temporary repositories. Owner review is still pending.
+
+
+## 2026-10-13 — v0.5 Add Booking UI demo (pending visual approval)
+
+Implemented a shared New Booking screen and a fictional in-memory session provider.
+The unchanged nine v0.4 fixtures are converted at the session boundary; existing
+schedule selectors still handle inclusive calendar display. Domain validation and
+half-open conflicts remain authoritative. Notes are stored separately from canonical
+bookings. New demo IDs are session counters and are not durable identifiers.
+
+Added the SDK 57-compatible native date/time picker. UTC picker carriers preserve
+selected wall-clock strings, which are then validated as New York times; this avoids
+native DST normalization. Both schedule views calculate today in New York. No SQLite,
+architecture-proposal changes, native repository folders, or Hub access were included.
+
+Automated booking-form regressions supplement the existing domain/privacy suite.
+Simulator observations and remaining visual checks are recorded separately. No commit
+or push is authorized until visual review.
+
+
+### v0.5 UI Revision 1 — pending visual approval
+
+New Booking now uses charcoal cards, cream text, gold accents, dark native pickers,
+and dark keyboards. Dashboard replaces its three repeated schedule sections with
+Today’s Dogs. Dashboard and Daily Schedule share compact stable-ID dog cards;
+every individual booking retains its own row and times. Service filters select
+matching dogs while retaining all their bookings for context. Overview counters
+count distinct dogs per service; the summary separately reports dogs and bookings.
+The in-memory save flow, domain rules, and fictional source fixtures are unchanged.
+Regression coverage includes same-name dogs and multiple overlapping bookings.
+
+
+### 2026-10-13 — End-of-day status (v0.5 in progress, uncommitted)
+
+**Commit:** Not yet committed. Committed so far in v0.5: `ab37822` (repository
+privacy protection) and `2f9faa0` (booking domain model and validation). The Add
+Booking UI, UI Revision 1, and today's navigation change are uncommitted.
+
+#### Work completed today
+- Add Booking UI and UI Revision 1 are implemented as a fictional, session-only demo.
+  New bookings last only until the app reloads. SQLite is not implemented.
+- Laura and Joanne added Dashboard → Dog Profile navigation. The profile's back link
+  reads **‹ Dashboard**, and the Dashboard keeps its filter and scroll position.
+- Dex completed a read-only technical review of the uncommitted v0.5 work.
+
+#### Verification
+| Check | Result |
+|---|---|
+| `npm test` | Passed: 69 of 69 |
+| `npx tsc --noEmit` | Passed |
+| `npm run privacy` | 0 violations; 8 manual-review findings, reviewed separately |
+| `git diff --check` | **Failed**: trailing whitespace in `App.tsx` line 64 and `src/screens/DashboardScreen.tsx` lines 24 and 73 |
+| Dashboard → Dog Profile → back, with filter and scroll kept | Passed: manually verified by Laura in the iPhone 16 Pro simulator |
+| Native accessibility assertions | Not verified; requires simulator follow-up |
+
+#### Open issues
+Full details and evidence are in the end-of-day update in
+[docs/qa/v0.5-ui-revision-1-qa.md](qa/v0.5-ui-revision-1-qa.md).
+
+| ID | Severity | Type | Summary |
+|---|---|---|---|
+| EOD-01 | Blocking | Confirmed defect | `git diff --check` fails on trailing whitespace (three lines). Must be fixed before committing. |
+| EOD-02 | Important | Confirmed limitation | Dog Profile shows a static fixture service using old labels, not the current booking's service. |
+| EOD-03 | Important | Confirmed limitation | Calendar cannot go back before October 2026; requirement 17 not yet met. |
+| EOD-04 | Important | Unverified, future concern | The schedule adapter drops invalid bookings without reporting them; not reachable today, but a risk once bookings persist. |
+| EOD-05 | Important | Unverified | Native accessibility not verified. |
+| EOD-06 | Minor | Confirmed limitation | Saved booking notes cannot be viewed. |
+| EOD-07 | Minor | Documentation | Earlier v0.5 QA records predated today's navigation change; resolved by this update. |
+
+#### Not yet done
+- VoiceOver, larger text sizes, landscape, and a physical iPhone
+- The Expo Go time-zone gate required before SQLite work
+- Owner visual approval of the Add Booking UI and UI Revision 1
+
+#### Next steps
+- Fix EOD-01 before any commit, then re-run `git diff --check`, `npm test`,
+  `npx tsc --noEmit`, and `npm run privacy`.
+- Decide with Joanne whether EOD-02 and EOD-03 are fixed in v0.5 or deferred.
+- Address EOD-04 as part of the approved SQLite work, so invalid stored bookings show
+  the "Some bookings need review" notice instead of disappearing.

@@ -28,3 +28,19 @@ export function scheduleMovements<T extends Pick<DogRecord, 'id'>>(entries: Retu
     ...(booking.endDate === date ? [{ id: `${booking.id}-departure`, dog, service: booking.service, type: 'Departure' as const, time: booking.departureTime }] : []),
   ]);
 }
+
+// Preserve every booking while showing each stable dog identity only once.
+export function groupScheduleByDog<T extends Pick<DogRecord, 'id'>>(entries: ReturnType<typeof dailySchedule<T>>) {
+  const groups = new Map<string, { dog: T; bookings: typeof entries }>();
+  for (const entry of entries) {
+    const group = groups.get(entry.dog.id);
+    if (group) group.bookings.push(entry);
+    else groups.set(entry.dog.id, { dog: entry.dog, bookings: [entry] });
+  }
+  return [...groups.values()];
+}
+
+export function filterDogScheduleGroups<T extends Pick<DogRecord, 'id'>>(groups: ReturnType<typeof groupScheduleByDog<T>>, service: Booking['service'] | 'All') {
+  // A matching dog keeps all its bookings visible, including other services.
+  return groups.filter(group => service === 'All' || group.bookings.some(entry => entry.booking.service === service));
+}

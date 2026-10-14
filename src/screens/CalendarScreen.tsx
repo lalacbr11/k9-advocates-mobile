@@ -10,8 +10,9 @@ import { theme } from '../theme';
 
 export type CalendarScreenHandle = { scrollToTop: () => void };
 
-export default function CalendarScreen({ onSelectDate, ref }: {
+export default function CalendarScreen({ onSelectDate, onAddBooking, ref }: {
   onSelectDate: (date: string) => void;
+  onAddBooking: () => void;
   ref?: Ref<CalendarScreenHandle>;
 }) {
   const scrollRef = useRef<ScrollView>(null);
@@ -26,10 +27,11 @@ export default function CalendarScreen({ onSelectDate, ref }: {
       <Text accessibilityRole="header" style={styles.title}>Calendar</Text>
       <Text style={styles.secondary}>Bookings at a glance. Tap a date for its schedule.</Text>
       <Text style={styles.secondary}>● Booked dates · Gold outline marks today</Text>
+      <Pressable accessibilityRole="button" onPress={onAddBooking} style={styles.more}><Text style={styles.button}>＋ Add Booking</Text></Pressable>
     </View>
     {monthSequence(demoCalendarStart, count).map(month => <CalendarMonth key={month} month={month} onSelectDate={onSelectDate} />)}
     <Pressable accessibilityRole="button" onPress={() => setCount(value => value + 6)} style={styles.more}><Text style={styles.button}>Show next six months</Text></Pressable>
-    <Text style={styles.secondary}>Read-only demo · Fictional bookings from October 2026.</Text>
+    <Text style={styles.secondary}>Fictional demo · Added bookings last only for this session.</Text>
   </Screen>;
 }
 const styles = StyleSheet.create({
