@@ -227,6 +227,7 @@ function AppContent() {
             date={selectedDate}
             onBack={() => setSelectedDate(null)}
             onAddBooking={addBooking}
+            onSelectBooking={(bookingId) => showProfile({ kind: 'booking', id: bookingId })}
             onSelectDog={(dog) =>
               showProfile({ kind: 'dog', id: dog.id })
             }

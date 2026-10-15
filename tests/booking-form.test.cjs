@@ -157,3 +157,34 @@ test('whole-card selection opens a sole booking, but never chooses arbitrarily a
   assert.deepEqual(bookingCardAction(['demo-b', 'demo-a']), { kind: 'choose' });
   assert.deepEqual(bookingCardAction(['demo-a', 'demo-b']), { kind: 'choose' });
 });
+
+test('Calendar daily groups keep each booking selectable by its canonical session ID', () => {
+  const { groupScheduleByDog } = load('logic/schedule.js');
+  const { bookingCardAction } = load('logic/bookingDetails.js');
+  const { openProfile, backFromProfile } = load('logic/navigation.js');
+  const date = '2026-10-09';
+  const extra = form.prepareDemoSave({ ...daycare, startTime: '17:00', endTime: '18:00' }, 'demo-calendar-second', dogIds, session);
+  assert.equal(extra.kind, 'saved');
+  const records = [...session, extra.booking];
+  const projected = form.sessionScheduleBookings(records);
+  const groups = groupScheduleByDog(dailySchedule(dogRecords, projected, date));
+  const willow = groups.find(group => group.dog.id === 'willow');
+  assert.deepEqual(willow.bookings.map(entry => entry.booking.id), ['booking-003', 'demo-calendar-second']);
+  assert.deepEqual(bookingCardAction(willow.bookings.map(entry => entry.booking.id)), { kind: 'choose' });
+  // Every row, including a second booking for one dog, resolves to its own record.
+  for (const group of groups) {
+    for (const { booking } of group.bookings) {
+      const history = openProfile([], { kind: 'booking', id: booking.id });
+      const selected = records.find(record => record.id === history.at(-1).id);
+      assert.equal(selected.id, booking.id);
+      assert.equal(selected.dogId, group.dog.id);
+      assert.deepEqual(backFromProfile(history), []);
+    }
+  }
+  const second = records.find(record => record.id === 'demo-calendar-second');
+  assert.equal(second.schedule.dropOffTime, '17:00');
+  assert.equal(records.find(record => record.id === 'booking-003').schedule.dropOffTime, '08:00');
+  assert.equal(groups.length, 5);
+  assert.equal(groups.flatMap(group => group.bookings).length, 6);
+  assert.ok(!dailySchedule(dogRecords, projected, '2026-10-10').some(entry => entry.booking.id === second.id));
+});

@@ -8,7 +8,7 @@ import { formatCalendarDate } from '../logic/calendar';
 import { dailySchedule, groupScheduleByDog } from '../logic/schedule';
 import { theme } from '../theme';
 
-export default function DailyScheduleScreen({ date, onBack, onSelectDog, onAddBooking }: { date: string; onBack: () => void; onSelectDog: (dog: Dog) => void; onAddBooking: () => void }) {
+export default function DailyScheduleScreen({ date, onBack, onSelectDog, onSelectBooking, onAddBooking }: { date: string; onBack: () => void; onSelectDog: (dog: Dog) => void; onSelectBooking: (bookingId: string) => void; onAddBooking: () => void }) {
   const { scheduleBookings: bookings, serviceLabel } = useBookingSession();
   const scheduled = dailySchedule(dogs, bookings, date);
   const groups = groupScheduleByDog(scheduled);
@@ -20,7 +20,7 @@ export default function DailyScheduleScreen({ date, onBack, onSelectDog, onAddBo
       <Text style={styles.secondary}>{groups.length} dogs · {scheduled.length} bookings · Arrival and departure days included</Text>
       <Pressable accessibilityRole="button" onPress={onAddBooking} style={styles.add}><Text style={styles.link}>＋ Add Booking</Text></Pressable>
     </View>
-    {groups.map(group => <ScheduledDogCard key={group.dog.id} {...group} serviceLabel={serviceLabel} onSelectDog={onSelectDog} />)}
+    {groups.map(group => <ScheduledDogCard key={group.dog.id} {...group} serviceLabel={serviceLabel} onSelectDog={onSelectDog} onSelectBooking={onSelectBooking} />)}
     {!scheduled.length && <View style={styles.empty}><Text style={styles.date}>No bookings scheduled</Text><Text style={styles.secondary}>Choose another date in the calendar.</Text></View>}
     <Text style={styles.secondary}>Prototype · All bookings and dog records are fictional.</Text>
   </Screen>;

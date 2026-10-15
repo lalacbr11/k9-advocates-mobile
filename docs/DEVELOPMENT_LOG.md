@@ -500,7 +500,7 @@ Full details and evidence are in the end-of-day update in
 ## 2026-10-14 — v0.5 Booking Details and Navigation
 
 **Milestone:** v0.5 — Booking Details and Navigation (in progress)
-**Commit:** Not yet committed
+**Commit:** `8c2bf66` (pushed to GitHub on 2026-10-14)
 
 ### Work Completed
 - Added booking routes to the existing profile history in `App.tsx` and `src/logic/navigation.ts`. No navigation library was added.
@@ -542,8 +542,60 @@ Full results are in [docs/qa/v0.5-booking-details-qa.md](qa/v0.5-booking-details
 - Boarding (overnight) and training Booking Details. Daycare Booking Details passed (BD-07): Hazel's daycare booking `demo-session-2` displayed the correct drop-off time of 11:00 AM and pick-up time of 7:00 PM.
 - Dashboard scroll position kept after returning from Booking Details
 - Training filter, and filter kept after Back
-- VoiceOver, larger text sizes, and a physical iPhone
+- VoiceOver and larger text sizes
+- Physical iPhone: the first launch and Dashboard rendering passed on 2026-10-15 (see [docs/qa/v0.5-physical-device-qa.md](qa/v0.5-physical-device-qa.md)). Detailed physical-device testing of individual features and accessibility remains outstanding.
 
 ### Known Issues
 - **EOD-02 (existing):** Hazel's Dog Profile shows Boarding while her current session booking is Daycare. The Dog Profile reads a fixed service from `dogRecords.ts`; Booking Details shows the correct booking service.
 - EOD-03 to EOD-06 from 13 October remain open.
+
+---
+
+## 2026-10-15 — v0.5 First Physical Device Test and Calendar Booking Details
+
+**Milestone:** v0.5 — first physical-device test; Calendar → Booking Details navigation
+**Commit:** Not yet committed (on top of `8c2bf66`)
+
+### Work Completed
+- Ran K9 Advocates Mobile on a physical iPhone 17 Pro Max for the first time, through Expo Go (SDK 57).
+- No application code was changed for the first device test.
+- Later the same day, Dex added Calendar → Daily Schedule → Booking Details navigation: tapping a booking on the Daily Schedule opens its Booking Details, and Back returns to that date's Daily Schedule. No dependencies or persistence were added.
+
+### Files Changed
+- `App.tsx`, `src/screens/DailyScheduleScreen.tsx`, `tests/booking-form.test.cjs` (Dex)
+- `docs/DEVELOPMENT_LOG.md`, `docs/qa/v0.5-physical-device-qa.md` (documentation)
+- `docs/screenshots/booking-details-atlas-v0.5.png`, `docs/screenshots/calendar-after-back-v0.5.png` (QA evidence)
+
+### Testing
+Full results are in [docs/qa/v0.5-physical-device-qa.md](qa/v0.5-physical-device-qa.md).
+
+| Test | Result |
+|---|---|
+| App launches in Expo Go on the physical iPhone | Passed: observed by the project owner |
+| Dashboard renders | Passed: observed by the project owner |
+| No startup errors | Passed: observed by the project owner |
+| Navigation buttons work | Passed: reported by the project owner; specific screens not recorded |
+| `npm test` | Passed: 73 of 73 (reported by Dex; re-run during documentation review) |
+| `npx tsc --noEmit`, `npm run privacy`, `git diff --check` | Passed; 0 privacy violations, 8 existing review findings (reported by Dex; re-run) |
+| Calendar → Daily Schedule → Booking Details on the device | Passed: observed by the project owner |
+| Atlas's fictional Dog Boarding booking (`demo-session-1`): owner Morgan Ellis, Confirmed, check-in October 15, 2026 9:00 AM, check-out October 18, 2026 4:00 PM | Passed: details correct, observed by the project owner |
+| Two-step Back: Booking Details → Daily Schedule → monthly Calendar | Passed: observed by the project owner. The monthly Calendar screenshot shows October 15, 2026 with the gold outline that marks today; the Calendar does not keep a separate selected date after leaving the Daily Schedule. |
+| Dashboard → Booking Details → Back returns to the Dashboard | Passed: observed by the project owner |
+
+The blue settings icon on screen belongs to Expo Go, not to the app.
+
+Screenshots were captured on the device and are available to the project owners as QA evidence. Two from the later session were reviewed in ChatGPT and, after a privacy review, saved to the repository: `docs/screenshots/booking-details-atlas-v0.5.png` and `docs/screenshots/calendar-after-back-v0.5.png`. Both show fictional data only, and their metadata contains only the capture time.
+
+### Not Tested
+- Monthly Calendar selected-date preservation after Back: not verified. The monthly Calendar does not currently show a separate selection highlight; the gold outline marks today.
+- Multiple bookings for one dog and the booking chooser, on the device
+- Separate **Profile ›** actions on the device
+- Add Booking regression after the navigation changes
+- Booking persistence (not implemented; bookings are session-only by design)
+- Adding a booking, native date and time pickers, and the keyboard on the device
+- Daycare and training Booking Details, other Calendar features, Dogs, Clients, and filters on the device
+- Accessibility: VoiceOver, larger text sizes, and contrast
+- Behavior after backgrounding, resuming, or relaunching the app
+
+### Known Issues
+- No new issues. EOD-02 to EOD-06 from 13 October remain open.
